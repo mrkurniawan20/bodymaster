@@ -15,11 +15,11 @@ function MemberInfo() {
         <div className="flex justify-center my-6">
           <img
             src="/src/assets/img/potrait.jpeg" // Replace with the actual image URL
-            alt="Andrea Phillips"
+            alt="Rafli Kurniawan"
             className="w-1/2 rounded-xl object-cover shadow-xl"
           />
         </div>
-        <h2 className="m-0 text-3xl font-bold ">RAFLI KURNIAWAN</h2>
+        <h2 className="m-0 text-3xl font-semibold">RAFLI KURNIAWAN</h2>
         <div className="mt-6">
           {' '}
           {/* Increased margin for spacing */}
