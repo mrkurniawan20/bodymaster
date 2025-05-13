@@ -42,6 +42,14 @@ export default function AddMember() {
               <Label htmlFor="name">Full Name</Label>
               <Input id="name" name="name" value={form.name} onChange={handleChange} placeholder="Enter full name" required className="mt-2" />
             </div>
+            <div>
+              <Label htmlFor="id">Member ID</Label>
+              <Input id="id" name="id" value={form.name} onChange={handleChange} placeholder="Enter member ID" required className="mt-2" />
+            </div>
+            <div>
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" name="password" value={form.name} onChange={handleChange} placeholder="Enter password" required className="mt-2" />
+            </div>
 
             {/* Phone */}
             <div>

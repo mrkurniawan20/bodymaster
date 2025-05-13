@@ -1,6 +1,7 @@
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
 
 export default function GymLoginMobile() {
   return (
@@ -16,16 +17,16 @@ export default function GymLoginMobile() {
 
           <form className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                ID
-              </label>
+              <Label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Member ID
+              </Label>
               <Input id="id" type="id" name="id" placeholder="#123" className="mt-1" />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <Label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Password
-              </label>
+              </Label>
               <Input id="password" type="password" name="password" placeholder="••••••••" className="mt-1" />
             </div>
 

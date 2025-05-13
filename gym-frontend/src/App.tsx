@@ -9,18 +9,20 @@ import MemberListDummy from './routes/admin/MemberListDummy';
 import VisitorLog from './routes/admin/VisitorLog';
 import AddMember from './routes/admin/AddMember';
 import PaymentPage from './routes/admin/Payment';
+import MemberLandingPage from './routes/user/MemberLandingPage';
 
 function App() {
   return (
     <>
-      {/* <MemberInfo /> */}
+      <GymLogin />
+      <MemberLandingPage />
+      <MemberInfo />
 
-      {/* <GymLogin /> */}
-      {/* <AdminDashboard /> */}
-      {/* <MemberListDummy /> */}
-      {/* <VisitorLog /> */}
       <AddMember />
-      {/* <PaymentPage /> */}
+      <AdminDashboard />
+      <MemberListDummy />
+      <VisitorLog />
+      <PaymentPage />
     </>
   );
 }
