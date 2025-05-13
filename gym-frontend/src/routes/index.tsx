@@ -4,6 +4,7 @@ import MemberLandingPage from './user/MemberLandingPage';
 import { MemberInfoPage } from './user/MemberInfo';
 import GymLoginMobile from './user/MemberLogin';
 import EditMemberPage from './user/MemberEdit';
+import NotFoundPage from './NotFound';
 
 export let router = createBrowserRouter([
   {
@@ -26,5 +27,9 @@ export let router = createBrowserRouter([
   {
     path: '/',
     Component: GymLoginMobile,
+  },
+  {
+    path: '*',
+    Component: NotFoundPage,
   },
 ]);

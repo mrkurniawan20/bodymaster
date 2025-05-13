@@ -9,6 +9,10 @@ import axios from 'axios';
 import { loginMember } from '@/services/api';
 
 export default function GymLoginMobile() {
+  const token = localStorage.getItem('token');
+  if (token) {
+    localStorage.removeItem('token');
+  }
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     id: '',
@@ -24,11 +28,12 @@ export default function GymLoginMobile() {
     try {
       // const res = await axios.post('http://127.0.0.1:3450/member/loginmember/', formData);
       const res = await loginMember(formData);
+      console.log(res.data);
       const token = res.data.loggedInMember.token;
       const user = res.data.loggedInMember.user;
       // const user = res.data.loggedInMember.user;
       localStorage.setItem('token', token);
-      console.log(user);
+      console.log(token);
       // localStorage.setItem('expired-day', user)
       // console.log(user);
       // localStorage.setItem('user', user);

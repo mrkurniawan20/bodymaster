@@ -8,6 +8,7 @@ import type { User } from '@/services/useUser';
 
 export default function EditMemberPage() {
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
   const { user } = useOutletContext<{ user: User }>();
   const { id } = useParams(); // ambil ID dari URL
   useEffect(() => {
@@ -28,7 +29,11 @@ export default function EditMemberPage() {
   useEffect(() => {
     const fetchMember = async () => {
       try {
-        const res = await axios.get(`http://127.0.0.1:3450/member/getmember/${id}`);
+        const res = await axios.get(`http://127.0.0.1:3450/member/getmember/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setFormData({
           name: res.data.name || '',
           phone: res.data.phone || '',
@@ -36,6 +41,7 @@ export default function EditMemberPage() {
         });
       } catch (err) {
         console.error('Error fetching member:', err);
+        navigate('/landingpage');
       }
     };
 
