@@ -58,12 +58,11 @@ export async function getMember(req: Request, res: Response) {
       where: { id },
       omit: {
         password: true,
-        phone: true,
         updatedAt: true,
         joinDate: true,
       },
     });
-    res.status(200).json({ member });
+    res.status(200).json(member);
   } catch (error: any) {
     res.status(400).json({ error: error.message });
   }
@@ -73,10 +72,15 @@ export async function editMember(req: Request, res: Response) {
   try {
     const id = Number(req.params.id);
     const image = req.file?.path;
+    const { password, phone, name } = req.body;
+    const hashed = await bcrypt.hash(password, saltRounds);
     const edit = await prisma.member.update({
       where: { id },
       data: {
+        name,
+        phone,
         image,
+        password: hashed,
       },
     });
     res.status(201).json({ message: 'Member edit successfully', edit });

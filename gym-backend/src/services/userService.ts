@@ -8,6 +8,11 @@ export async function login(id: string, password: string) {
   try {
     const user = await prisma.member.findUnique({
       where: { id: userId },
+      omit: {
+        joinDate: true,
+        phone: true,
+        updatedAt: true,
+      },
     });
     if (!user) {
       throw new Error('Member tidak ditemukan');
@@ -17,7 +22,6 @@ export async function login(id: string, password: string) {
       throw new Error('Password salah!');
     }
     const token = signToken({ id: userId });
-    console.log(token, user);
     return { token, user };
   } catch (error) {}
 }
