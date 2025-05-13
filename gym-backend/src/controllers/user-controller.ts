@@ -73,15 +73,16 @@ export async function editMember(req: Request, res: Response) {
     const id = Number(req.params.id);
     const image = req.file?.path;
     const { password, phone, name } = req.body;
-    const hashed = await bcrypt.hash(password, saltRounds);
+    const dataToUpdate: Record<string, any> = {};
+    if (name) dataToUpdate.name = name;
+    if (phone) dataToUpdate.phone = phone;
+    if (password) {
+      const hashed = await bcrypt.hash(password, saltRounds);
+      dataToUpdate.password = hashed;
+    }
     const edit = await prisma.member.update({
       where: { id },
-      data: {
-        name,
-        phone,
-        image,
-        password: hashed,
-      },
+      data: dataToUpdate,
     });
     res.status(201).json({ message: 'Member edit successfully', edit });
   } catch (error: any) {
