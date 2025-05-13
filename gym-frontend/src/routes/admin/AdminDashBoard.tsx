@@ -3,6 +3,10 @@ import { Button } from '@/components/ui/button';
 import { Menu, Users, CalendarDays, Settings } from 'lucide-react';
 import { Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { getAllMember } from '@/services/api';
+import type { Response } from 'express';
+import { useEffect, useState } from 'react';
 
 const expiredMembers = [
   { id: 1, name: 'John Doe', expiredAt: '2025-05-01' },
@@ -35,7 +39,19 @@ const groupByDate = (members: typeof expiredMembers) => {
   }, {});
 };
 
-export default function AdminDashboard() {
+export function AdminDashboard() {
+  const [member, setMember] = useState([]);
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const res = await axios.get('http://127.0.0.1:3450/member/getallmember/');
+        setMember(res.data);
+      } catch (error: any) {
+        console.log(error);
+      }
+    };
+    fetchMembers();
+  }, []);
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-6 space-y-4">
       {/* Header */}
@@ -69,7 +85,7 @@ export default function AdminDashboard() {
           <CardContent className="py-4 px-4 flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Active Members</p>
-              <p className="text-xl font-semibold">127</p>
+              <p className="text-xl font-semibold">{member.length}</p>
             </div>
             <Users className="h-6 w-6 text-gray-400" />
           </CardContent>

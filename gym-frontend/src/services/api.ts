@@ -11,3 +11,7 @@ export function getMember(id: string) {
 export function loginMember(formData: any) {
   return api.post('/loginmember', formData);
 }
+
+export function getAllMember() {
+  return api.get('/getAllMember');
+}

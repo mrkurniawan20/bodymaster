@@ -37,7 +37,11 @@ export default function GymLoginMobile() {
       // localStorage.setItem('expired-day', user)
       // console.log(user);
       // localStorage.setItem('user', user);
-      navigate('/landingPage');
+      if (user.role == `ADMIN`) {
+        navigate('/dashboard');
+      } else {
+        navigate('/landingPage');
+      }
     } catch (error: any) {
       console.log(error.message);
     }

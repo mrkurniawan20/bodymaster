@@ -4,7 +4,6 @@ import viteLogo from '/vite.svg';
 import './App.css';
 // import MemberInfo from './routes/user/MemberInfo';
 import GymLogin from './routes/user/MemberLogin';
-import AdminDashboard from './routes/admin/AdminDashBoard';
 import MemberListDummy from './routes/admin/MemberListDummy';
 import VisitorLog from './routes/admin/VisitorLog';
 import AddMember from './routes/admin/AddMember';
