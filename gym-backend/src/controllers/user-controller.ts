@@ -1,0 +1,82 @@
+import { Request, Response } from 'express';
+import { prisma } from '../prisma/client';
+import { saltRounds } from '../app';
+import { addMonths } from 'date-fns';
+import bcrypt from 'bcrypt';
+
+export async function addMember(req: Request, res: Response) {
+  try {
+    const { name, id, password, phone } = req.body;
+    const hashed = await bcrypt.hash(password, saltRounds);
+    const joinDate = new Date();
+    const expireDate = addMonths(joinDate, 1);
+    const add = await prisma.member.create({
+      data: {
+        name,
+        id,
+        password: hashed,
+        phone,
+        expireDate,
+      },
+    });
+    res.status(201).json({ add });
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
+export async function loginMember(req: Request, res: Response) {
+  try {
+    const { id, password } = req.body;
+    const memberId = Number(id);
+    const user = await prisma.member.findUnique({
+      where: { id: memberId },
+    });
+    if (!user) {
+      res.status(404).json({ message: 'Member tidak ada' });
+      return;
+    }
+    const isValid = await bcrypt.compare(password, user?.password);
+    if (!isValid) {
+      res.status(400).json({ message: 'Password salah' });
+      return;
+    }
+    res.status(200).json({ message: 'Login successfully' });
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
+export async function getMember(req: Request, res: Response) {
+  try {
+    const id = Number(req.params.id);
+    const member = await prisma.member.findUnique({
+      where: { id },
+      omit: {
+        password: true,
+        phone: true,
+        updatedAt: true,
+        joinDate: true,
+      },
+    });
+    res.status(200).json({ member });
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
+export async function editMember(req: Request, res: Response) {
+  try {
+    const id = Number(req.params.id);
+    const image = req.file?.path;
+    const edit = await prisma.member.update({
+      where: { id },
+      data: {
+        image,
+      },
+    });
+    res.status(201).json({ message: 'Member edit successfully', edit });
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
+}
