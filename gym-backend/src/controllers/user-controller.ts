@@ -3,6 +3,8 @@ import { prisma } from '../prisma/client';
 import { saltRounds } from '../app';
 import { addMonths } from 'date-fns';
 import bcrypt from 'bcrypt';
+import { signToken } from '../utils/jwt';
+import { login } from '../services/userService';
 
 export async function addMember(req: Request, res: Response) {
   try {
@@ -28,20 +30,22 @@ export async function addMember(req: Request, res: Response) {
 export async function loginMember(req: Request, res: Response) {
   try {
     const { id, password } = req.body;
-    const memberId = Number(id);
-    const user = await prisma.member.findUnique({
-      where: { id: memberId },
-    });
-    if (!user) {
-      res.status(404).json({ message: 'Member tidak ada' });
-      return;
-    }
-    const isValid = await bcrypt.compare(password, user?.password);
-    if (!isValid) {
-      res.status(400).json({ message: 'Password salah' });
-      return;
-    }
-    res.status(200).json({ message: 'Login successfully' });
+    const loggedInMember = await login(id, password);
+    res.status(200).json({ message: 'Login successfully', loggedInMember });
+    // const user = await prisma.member.findUnique({
+    //   where: { id: memberId },
+    // });
+    // if (!user) {
+    //   res.status(404).json({ message: 'Member tidak ada' });
+    //   return;
+    // }
+    // const isValid = await bcrypt.compare(password, user?.password);
+    // if (!isValid) {
+    //   res.status(400).json({ message: 'Password salah' });
+    //   return;
+    // }
+    // const token = signToken({id : user.id, expireDate: user.expireDate})
+    // res.status(200).json({ message: 'Login successfully', user });
   } catch (error: any) {
     res.status(400).json({ error: error.message });
   }

@@ -1,0 +1,23 @@
+import { Request, Response } from 'express';
+import { prisma } from '../prisma/client';
+import bcrypt from 'bcrypt';
+import { signToken } from '../utils/jwt';
+
+export async function login(id: string, password: string) {
+  const userId = Number(id);
+  try {
+    const user = await prisma.member.findUnique({
+      where: { id: userId },
+    });
+    if (!user) {
+      throw new Error('Member tidak ditemukan');
+    }
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+      throw new Error('Password salah!');
+    }
+    const token = signToken({ id: userId });
+    console.log(token, user);
+    return { token, user };
+  } catch (error) {}
+}
