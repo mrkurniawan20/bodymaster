@@ -2,8 +2,27 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
+import { useState } from 'react';
+import { loginMember } from '@/services/api';
 
 export default function GymLoginMobile() {
+  const [formData, setFormData] = useState({
+    id: '',
+    password: '',
+  });
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    console.log(formData);
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  }
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+
+    try {
+      const res = await loginMember(formData);
+      const token = res.data.loggedInMember.token;
+      console.log(token);
+    } catch (error) {}
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-black to-gray-900 px-4">
       <Card className="w-full max-w-sm rounded-2xl p-6 shadow-lg bg-white">
@@ -15,19 +34,19 @@ export default function GymLoginMobile() {
             {/* <p className="text-sm text-gray-500">Please log in to see your membership</p> */}
           </div>
 
-          <form className="space-y-4">
+          <form className="space-y-4" method="POST" encType="multipart/form-data" onSubmit={handleSubmit}>
             <div>
-              <Label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <Label htmlFor="id" className="block text-sm font-medium text-gray-700">
                 Member ID
               </Label>
-              <Input id="id" type="id" name="id" placeholder="#123" className="mt-1" />
+              <Input id="id" type="id" name="id" placeholder="#123" className="mt-1" onChange={handleChange} />
             </div>
 
             <div>
               <Label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Password
               </Label>
-              <Input id="password" type="password" name="password" placeholder="••••••••" className="mt-1" />
+              <Input id="password" type="password" name="password" placeholder="••••••••" className="mt-1" onChange={handleChange} />
             </div>
 
             <Button type="submit" className="w-full mt-2">

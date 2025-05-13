@@ -12,11 +12,11 @@ export default function MemberLandingPage() {
           <CardTitle className="text-2xl">Welcome, Member!</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Button className="w-full" onClick={() => alert('/edit')}>
-            ✏️ Edit Member Data
+          <Button variant="outline" className="w-full" onClick={() => alert('/edit')}>
+            ✏️ Edit Data
           </Button>
-          <Button variant="outline" className="w-full" onClick={() => alert('/memberinfo')}>
-            📄 View Member Info
+          <Button className="w-full" onClick={() => alert('/memberinfo')}>
+            💪🏼 Start Working Out
           </Button>
         </CardContent>
       </Card>

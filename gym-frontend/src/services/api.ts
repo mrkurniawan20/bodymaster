@@ -1,9 +1,13 @@
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: '/member',
+  baseURL: 'http://127.0.0.1:3450/member',
 });
 
 export function getMember(id: string) {
-  return api.get('/getmember/:id', { params: { id } });
+  return api.get(`/getmember/:${id}`);
+}
+
+export function loginMember(formData: any) {
+  return api.post('/loginmember', formData);
 }
