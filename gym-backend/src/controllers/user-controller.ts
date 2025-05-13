@@ -51,6 +51,21 @@ export async function loginMember(req: Request, res: Response) {
   }
 }
 
+export async function getAllMember(req: Request, res: Response) {
+  try {
+    const members = await prisma.member.findMany({
+      omit: {
+        joinDate: true,
+        updatedAt: true,
+        password: true,
+        role: true,
+      },
+    });
+    res.status(200).json(members);
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
+}
 export async function getMember(req: Request, res: Response) {
   try {
     const id = Number(req.params.id);

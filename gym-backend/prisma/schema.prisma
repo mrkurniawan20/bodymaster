@@ -23,10 +23,16 @@ model Member {
   joinDate    DateTime @default(now())
   expireDate  DateTime
   status      Status   @default(ACTIVE)
+  role        Role      @default(MEMBER)
   updatedAt   DateTime @updatedAt
 }
 
 enum Status {
   ACTIVE
   INACTIVE
+}
+
+enum Role {
+  MEMBER
+  ADMIN
 }
