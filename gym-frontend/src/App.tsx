@@ -2,7 +2,7 @@ import { useState } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
-import MemberInfo from './routes/user/MemberInfo';
+// import MemberInfo from './routes/user/MemberInfo';
 import GymLogin from './routes/user/MemberLogin';
 import AdminDashboard from './routes/admin/AdminDashBoard';
 import MemberListDummy from './routes/admin/MemberListDummy';

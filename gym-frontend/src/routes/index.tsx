@@ -1,8 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom';
 import ProtectedRouteLayout from './ProtectedRoute';
 import MemberLandingPage from './user/MemberLandingPage';
-import MemberInfo from './user/MemberInfo';
+import { MemberInfoPage } from './user/MemberInfo';
 import GymLoginMobile from './user/MemberLogin';
+import EditMemberPage from './user/MemberEdit';
 
 export let router = createBrowserRouter([
   {
@@ -14,11 +15,12 @@ export let router = createBrowserRouter([
       },
       {
         path: '/memberInfo',
-        Component: MemberInfo,
+        Component: MemberInfoPage,
       },
-      // {
-      //     path
-      // }
+      {
+        path: '/editMember/:id',
+        Component: EditMemberPage,
+      },
     ],
   },
   {

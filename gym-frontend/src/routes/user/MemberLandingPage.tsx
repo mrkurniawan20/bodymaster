@@ -14,7 +14,7 @@ export default function MemberLandingPage() {
           <CardTitle className="text-2xl">Welcome, {user.name}!</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Button variant="outline" className="w-full" onClick={() => alert('/edit')}>
+          <Button variant="outline" className="w-full" onClick={() => navigate(`/editmember/${user.id}`)}>
             ✏️ Edit Data
           </Button>
           <Button className="w-full" onClick={() => navigate('/memberinfo')}>

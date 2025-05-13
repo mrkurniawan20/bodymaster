@@ -2,7 +2,7 @@ import type { User } from '@/services/useUser';
 import React, { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 
-function MemberInfo() {
+export function MemberInfoPage() {
   const { user } = useOutletContext<{ user: User }>();
   // const [isExpired, setIsExpired] = useState(true);
   // console.log(user.status == 'ACTIVE');
@@ -100,5 +100,3 @@ function MemberInfo() {
     </div>
   );
 }
-
-export default MemberInfo;
