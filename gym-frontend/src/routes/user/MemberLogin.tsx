@@ -3,9 +3,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
+// import { loginMember } from '@/services/api';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { loginMember } from '@/services/api';
 
 export default function GymLoginMobile() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     id: '',
     password: '',
@@ -18,13 +22,23 @@ export default function GymLoginMobile() {
     e.preventDefault();
 
     try {
+      // const res = await axios.post('http://127.0.0.1:3450/member/loginmember/', formData);
       const res = await loginMember(formData);
       const token = res.data.loggedInMember.token;
-      console.log(token);
-    } catch (error) {}
+      const user = res.data.loggedInMember.user;
+      // const user = res.data.loggedInMember.user;
+      localStorage.setItem('token', token);
+      console.log(user);
+      // localStorage.setItem('expired-day', user)
+      // console.log(user);
+      // localStorage.setItem('user', user);
+      navigate('/landingPage');
+    } catch (error: any) {
+      console.log(error.message);
+    }
   }
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-black to-gray-900 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-black to-blue-900 px-4">
       <Card className="w-full max-w-sm rounded-2xl p-6 shadow-lg bg-white">
         <CardContent className="space-y-6">
           <div className="text-center">

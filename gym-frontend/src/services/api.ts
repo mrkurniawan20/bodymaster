@@ -5,7 +5,7 @@ export const api = axios.create({
 });
 
 export function getMember(id: string) {
-  return api.get(`/getmember/:${id}`);
+  return api.get(`/getmember/${id}`);
 }
 
 export function loginMember(formData: any) {
