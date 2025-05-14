@@ -136,6 +136,15 @@ export async function recordVisit(req: Request, res: Response) {
   }
 }
 
+export async function getLogVisit(req: Request, res: Response) {
+  try {
+    const visits = await prisma.visit.findMany();
+    res.status(201).json(visits);
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
 export async function getTodayVisit(req: Request, res: Response) {
   try {
     const todayStart = new Date();
