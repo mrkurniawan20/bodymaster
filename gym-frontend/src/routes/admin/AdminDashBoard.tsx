@@ -2,7 +2,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Menu, Users, CalendarDays, Settings } from 'lucide-react';
 import { Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { getAllMember } from '@/services/api';
 import type { Response } from 'express';
@@ -13,6 +13,21 @@ const expiredMembers = [
   { id: 2, name: 'Jane Smith', expiredAt: '2025-04-28' },
   { id: 3, name: 'Mark Evans', expiredAt: '2025-05-05' },
 ];
+
+export interface Member {
+  id: number;
+  name: string;
+  phone: string;
+  image: string;
+  expireDate: string;
+  status: string;
+}
+
+export interface Visit {
+  id: number;
+  memberId: number;
+  visitedAt: Date;
+}
 
 const getRelativeDateLabel = (dateStr: string): string => {
   const today = new Date();
@@ -40,18 +55,27 @@ const groupByDate = (members: typeof expiredMembers) => {
 };
 
 export function AdminDashboard() {
-  const [member, setMember] = useState([]);
+  const [getMember, setGetMember] = useState([]);
+  const [getVisit, setGetVisit] = useState([]);
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const res = await axios.get('http://127.0.0.1:3450/member/getallmember/');
-        setMember(res.data);
+        const member = await axios.get('http://127.0.0.1:3450/member/getallmember/');
+        setGetMember(member.data);
+        const visit = await axios.get('http://127.0.0.1:3450/member/todayVisit/');
+        setGetVisit(visit.data);
       } catch (error: any) {
         console.log(error);
       }
     };
     fetchMembers();
   }, []);
+  const dataMember: Member[] = getMember;
+  const dataVisit: Visit[] = getVisit;
+  console.log(getVisit);
+
+  const inactiveMember = dataMember.filter((obj) => obj.status == `INACTIVE`).length;
+  const activeMember = getMember.length - inactiveMember;
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-6 space-y-4">
       {/* Header */}
@@ -85,7 +109,7 @@ export function AdminDashboard() {
           <CardContent className="py-4 px-4 flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Active Members</p>
-              <p className="text-xl font-semibold">{member.length}</p>
+              <p className="text-xl font-semibold">{activeMember}</p>
             </div>
             <Users className="h-6 w-6 text-gray-400" />
           </CardContent>
@@ -95,7 +119,7 @@ export function AdminDashboard() {
           <CardContent className="py-4 px-4 flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Visits Today</p>
-              <p className="text-xl font-semibold">42</p>
+              <p className="text-xl font-semibold">{getVisit.length}</p>
             </div>
             <CalendarDays className="h-6 w-6 text-gray-400" />
           </CardContent>
@@ -104,18 +128,26 @@ export function AdminDashboard() {
 
       {/* Quick Navigation */}
       <div className="grid grid-cols-2 gap-4 mt-4">
-        <Button className="w-full" variant="secondary">
-          Payment Log
-        </Button>
-        <Button className="w-full" variant="secondary">
-          Visitor Log
-        </Button>
-        <Button className="w-full" variant="secondary">
-          Member List
-        </Button>
-        <Button className="w-full" variant="secondary">
-          Add Member
-        </Button>
+        <NavLink to={'/payment'}>
+          <Button className="w-full" variant="secondary">
+            Payment Log
+          </Button>
+        </NavLink>
+        <NavLink to={'/visitor'}>
+          <Button className="w-full" variant="secondary">
+            Visitor Log
+          </Button>
+        </NavLink>
+        <NavLink to={'/memberlist'}>
+          <Button className="w-full" variant="secondary">
+            Member List
+          </Button>
+        </NavLink>
+        <NavLink to={'/addmember'}>
+          <Button className="w-full" variant="secondary">
+            Add Member
+          </Button>
+        </NavLink>
       </div>
     </div>
   );

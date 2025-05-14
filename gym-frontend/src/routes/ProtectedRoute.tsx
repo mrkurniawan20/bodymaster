@@ -10,25 +10,8 @@ interface DecodedProps {
 }
 
 function ProtectedRouteLayout() {
-  // const { user } = useUserStore();
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
-  // if (!token) {
-  //   return;
-  // }
-  // useEffect(() => {
-  //   if (!token) {
-  //     navigate('/login');
-  //   }
-  //   return;
-  // }, []);
-  //   if (!token) {
-  //     navigate('/login');
-  //     return;
-  //   }
-
-  // const decoded = jwtDecode<DecodedProps>(token);
-  // const userId = decoded.id;
 
   function isTokenExpired(token: string): boolean {
     const decoded = jwtDecode<DecodedProps>(token);
@@ -52,9 +35,6 @@ function ProtectedRouteLayout() {
   if (loading) {
     return <div>Loading...</div>;
   }
-
-  //   const isLogin = true;
-  // const user = useUser();
 
   if (!token) {
     return <Navigate to={'/'} />;

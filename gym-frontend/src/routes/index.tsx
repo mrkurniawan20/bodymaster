@@ -6,6 +6,8 @@ import GymLoginMobile from './user/MemberLogin';
 import EditMemberPage from './user/MemberEdit';
 import NotFoundPage from './NotFound';
 import { AdminDashboard } from './admin/AdminDashBoard';
+import AddMember from './admin/AddMember';
+import VisitorLog from './admin/VisitorLog';
 
 export let router = createBrowserRouter([
   {
@@ -26,6 +28,14 @@ export let router = createBrowserRouter([
       {
         path: '/dashboard',
         Component: AdminDashboard,
+      },
+      {
+        path: '/addmember',
+        Component: AddMember,
+      },
+      {
+        path: '/visitor',
+        Component: VisitorLog,
       },
     ],
   },

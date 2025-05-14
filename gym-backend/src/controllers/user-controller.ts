@@ -123,13 +123,34 @@ export async function recordVisit(req: Request, res: Response) {
     });
     if (alreadyVisit) {
       res.status(200).json({ alreadyVisit });
+    } else {
+      const visit = await prisma.visit.create({
+        data: {
+          memberId: id,
+        },
+      });
+      res.status(201).json(visit);
     }
-    const visit = await prisma.visit.create({
-      data: {
-        memberId: id,
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
+export async function getTodayVisit(req: Request, res: Response) {
+  try {
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59, 999);
+    const allVisit = await prisma.visit.findMany({
+      where: {
+        visitedAt: {
+          gte: todayStart,
+          lte: todayEnd,
+        },
       },
     });
-    res.status(201).json(visit);
+    res.status(200).json(allVisit);
   } catch (error: any) {
     res.status(400).json({ error: error.message });
   }

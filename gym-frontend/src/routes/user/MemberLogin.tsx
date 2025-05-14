@@ -33,14 +33,15 @@ export default function GymLoginMobile() {
       const user = res.data.loggedInMember.user;
       // const user = res.data.loggedInMember.user;
       localStorage.setItem('token', token);
-      console.log(token);
+      // console.log(user);
       // localStorage.setItem('expired-day', user)
       // console.log(user);
       // localStorage.setItem('user', user);
       if (user.role == `ADMIN`) {
         navigate('/dashboard');
       } else {
-        navigate('/landingPage');
+        await axios.post(`http://127.0.0.1:3450/member/visit/${user.id}`);
+        navigate('/landingpage');
       }
     } catch (error: any) {
       console.log(error.message);
