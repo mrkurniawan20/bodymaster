@@ -25,6 +25,8 @@ model Member {
   status      Status   @default(ACTIVE)
   role        Role      @default(MEMBER)
   updatedAt   DateTime @updatedAt
+  visit Visit[]
+  @@index ([id, expireDate])
 }
 
 enum Status {
@@ -35,4 +37,13 @@ enum Status {
 enum Role {
   MEMBER
   ADMIN
+}
+
+model Visit{
+  id          Int      @id @default(autoincrement())
+  memberId Int
+  member Member @relation(fields: [memberId], references: [id])
+  visitedAt DateTime @default(now())
+
+  @@index ([memberId, visitedAt])
 }

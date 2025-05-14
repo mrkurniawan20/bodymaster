@@ -104,3 +104,33 @@ export async function editMember(req: Request, res: Response) {
     res.status(400).json({ error: error.message });
   }
 }
+
+export async function recordVisit(req: Request, res: Response) {
+  try {
+    const id = Number(req.params.id);
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59, 999);
+    const alreadyVisit = await prisma.visit.findFirst({
+      where: {
+        memberId: id,
+        visitedAt: {
+          gte: todayStart,
+          lte: todayEnd,
+        },
+      },
+    });
+    if (alreadyVisit) {
+      res.status(200).json({ alreadyVisit });
+    }
+    const visit = await prisma.visit.create({
+      data: {
+        memberId: id,
+      },
+    });
+    res.status(201).json(visit);
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
+}
