@@ -5,19 +5,20 @@ import { useEffect, useState } from 'react';
 interface Decoded {
   id: number;
 }
-export interface User {
+export interface Member {
   id: number;
   name: string;
+  phone: string;
   image: string;
   expireDate: Date;
   status: string;
 }
-export interface UserProps {
-  user: User;
+export interface MemberProps {
+  user: Member;
 }
 
 export function useUser() {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<Member | null>(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -45,4 +46,30 @@ export function useUser() {
     }
   }, []);
   return { user, loading };
+}
+
+export function useMember() {
+  const [member, setMember] = useState<Member[] | null>(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+    try {
+      axios
+        .get(`http://127.0.0.1:3450/member/getallmember/`, { headers: { Authorization: `Bearer ${token}` } })
+        .then((res) => setMember(res.data))
+        .catch((err) => {
+          console.log(`Failed to fetch user ${err}`);
+          localStorage.removeItem('token');
+        })
+        .finally(() => setLoading(false));
+    } catch (error) {
+      console.log('Unable to fetch user');
+      localStorage.removeItem('token');
+    }
+  }, []);
+  return { member, loading };
 }

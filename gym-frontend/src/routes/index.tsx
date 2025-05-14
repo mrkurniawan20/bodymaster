@@ -8,6 +8,10 @@ import NotFoundPage from './NotFound';
 import { AdminDashboard } from './admin/AdminDashBoard';
 import AddMember from './admin/AddMember';
 import VisitorLog from './admin/VisitorLog';
+import MemberListDummy from './admin/MemberListDummy';
+import PaymentPage from './admin/Payment';
+import { ProtectedRouteLayoutAdmin } from './ProtectedRouteAdmin';
+import MemberList from './admin/MemberList';
 
 export let router = createBrowserRouter([
   {
@@ -25,6 +29,11 @@ export let router = createBrowserRouter([
         path: '/editMember/:id',
         Component: EditMemberPage,
       },
+    ],
+  },
+  {
+    Component: ProtectedRouteLayoutAdmin,
+    children: [
       {
         path: '/dashboard',
         Component: AdminDashboard,
@@ -36,6 +45,14 @@ export let router = createBrowserRouter([
       {
         path: '/visitor',
         Component: VisitorLog,
+      },
+      {
+        path: '/memberlist',
+        Component: MemberList,
+      },
+      {
+        path: '/payment',
+        Component: PaymentPage,
       },
     ],
   },

@@ -71,11 +71,15 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import type { Member } from '@/services/useUser';
+import { useOutletContext } from 'react-router-dom';
 
 type Visitor = {
+  id:number,
   name: string;
-  time: string;
+  visitedAt: string;
 };
 
 const formatDate = (date: Date): string => {
@@ -85,6 +89,23 @@ const formatDate = (date: Date): string => {
 const ITEMS_PER_PAGE = 10;
 
 export default function VisitorLog() {
+  const { member } = useOutletContext<{ member: Member[] }>();
+  const [visitorData, setVisitorData] = useState<{visitorData:Visitor[]}>()
+
+  // console.log(member);
+
+  // const [members, setMembers] = useState([]);
+  useEffect(() => {
+    async function fetchMember() {
+      try {
+        const visit = await axios.get('http://127.0.0.1:3450/member/getvisitlog/');
+        const visitorData = visit.data;
+        setVisitorData(visitorData)
+      } catch (error) {}
+    }
+    fetchMember();
+  }, []);
+
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [currentPage, setCurrentPage] = useState<number>(1);
 
@@ -93,28 +114,28 @@ export default function VisitorLog() {
     setCurrentPage(1); // Reset halaman saat ganti tanggal
   };
 
-  const visitorData: Record<string, Visitor[]> = {
-    '2025-05-12': Array.from({ length: 100 }, (_, i) => ({
-      name: `Visitor ${i + 1}`,
-      time: `${9 + (i % 12)}:${(i * 7) % 60} AM`,
-    })),
-    '2025-05-11': [
-      { name: 'Alice Cooper', time: '02:00 PM' },
-      { name: 'Bob Marley', time: '03:15 PM' },
-      { name: 'Alice Cooper', time: '02:00 PM' },
-      { name: 'Bob Marley', time: '03:15 PM' },
-      { name: 'Alice Cooper', time: '02:00 PM' },
-      { name: 'Bob Marley', time: '03:15 PM' },
-      { name: 'Alice Cooper', time: '02:00 PM' },
-      { name: 'Bob Marley', time: '03:15 PM' },
-      { name: 'Alice Cooper', time: '02:00 PM' },
-      { name: 'Bob Marley', time: '03:15 PM' },
-      { name: 'Alice Cooper', time: '02:00 PM' },
-      { name: 'Bob Marley', time: '03:15 PM' },
-    ],
-  };
+  // const visitorData: Record<string, Visitor[]> = {
+  //   '2025-05-12': Array.from({ length: 100 }, (_, i) => ({
+  //     name: `Visitor ${i + 1}`,
+  //     time: `${9 + (i % 12)}:${(i * 7) % 60} AM`,
+  //   })),
+  //   '2025-05-11': [
+  //     { name: 'Alice Cooper', time: '02:00 PM' },
+  //     { name: 'Bob Marley', time: '03:15 PM' },
+  //     { name: 'Alice Cooper', time: '02:00 PM' },
+  //     { name: 'Bob Marley', time: '03:15 PM' },
+  //     { name: 'Alice Cooper', time: '02:00 PM' },
+  //     { name: 'Bob Marley', time: '03:15 PM' },
+  //     { name: 'Alice Cooper', time: '02:00 PM' },
+  //     { name: 'Bob Marley', time: '03:15 PM' },
+  //     { name: 'Alice Cooper', time: '02:00 PM' },
+  //     { name: 'Bob Marley', time: '03:15 PM' },
+  //     { name: 'Alice Cooper', time: '02:00 PM' },
+  //     { name: 'Bob Marley', time: '03:15 PM' },
+  //   ],
+  // };
 
-  const visitors: Visitor[] = visitorData[formatDate(selectedDate)] || [];
+  const visitors: Visitor[] = visitorData!.[formatDate(selectedDate)] || [];
   const totalPages = Math.ceil(visitors.length / ITEMS_PER_PAGE);
   const paginatedVisitors = visitors.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 

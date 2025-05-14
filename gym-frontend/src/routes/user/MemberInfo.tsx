@@ -1,9 +1,9 @@
-import type { User } from '@/services/useUser';
+import type { Member } from '@/services/useUser';
 import React, { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 
 export function MemberInfoPage() {
-  const { user } = useOutletContext<{ user: User }>();
+  const { user } = useOutletContext<{ user: Member }>();
   // const [isExpired, setIsExpired] = useState(true);
   // console.log(user.status == 'ACTIVE');
   // useEffect(() => {

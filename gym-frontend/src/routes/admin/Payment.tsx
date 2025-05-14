@@ -13,7 +13,6 @@ type Payment = {
   date: string;
   amount: number;
   method: string;
-  status: 'Paid' | 'Pending' | 'Failed';
 };
 
 const dummyPayments: Payment[] = Array.from({ length: 32 }, (_, i) => ({
@@ -22,7 +21,6 @@ const dummyPayments: Payment[] = Array.from({ length: 32 }, (_, i) => ({
   date: `2025-05-${((i % 30) + 1).toString().padStart(2, '0')}`,
   amount: 250000,
   method: ['Cash', 'Transfer', 'Card'][i % 3],
-  status: ['Paid', 'Pending', 'Failed'][i % 3] as Payment['status'],
 }));
 
 const ITEMS_PER_PAGE = 10;

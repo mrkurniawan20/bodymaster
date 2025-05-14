@@ -2,11 +2,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Menu, Users, CalendarDays, Settings } from 'lucide-react';
 import { Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useOutletContext } from 'react-router-dom';
 import axios from 'axios';
 import { getAllMember } from '@/services/api';
 import type { Response } from 'express';
 import { useEffect, useState } from 'react';
+import type { Member } from '@/services/useUser';
 
 const expiredMembers = [
   { id: 1, name: 'John Doe', expiredAt: '2025-05-01' },
@@ -14,14 +15,14 @@ const expiredMembers = [
   { id: 3, name: 'Mark Evans', expiredAt: '2025-05-05' },
 ];
 
-export interface Member {
-  id: number;
-  name: string;
-  phone: string;
-  image: string;
-  expireDate: string;
-  status: string;
-}
+// export interface Member {
+//   id: number;
+//   name: string;
+//   phone: string;
+//   image: string;
+//   expireDate: string;
+//   status: string;
+// }
 
 export interface Visit {
   id: number;
@@ -55,24 +56,26 @@ const groupByDate = (members: typeof expiredMembers) => {
 };
 
 export function AdminDashboard() {
+  // const { member } = useOutletContext<{ member: User[] }>();
   const [getMember, setGetMember] = useState([]);
   const [getVisit, setGetVisit] = useState([]);
   useEffect(() => {
-    const fetchMembers = async () => {
+    async function fetchMembers() {
       try {
         const member = await axios.get('http://127.0.0.1:3450/member/getallmember/');
         setGetMember(member.data);
-        const visit = await axios.get('http://127.0.0.1:3450/member/todayVisit/');
+        if (!localStorage.getItem('members')) {
+        }
+        const visit = await axios.get('http://127.0.0.1:3450/member/getTodayVisit/');
         setGetVisit(visit.data);
       } catch (error: any) {
         console.log(error);
       }
-    };
+    }
     fetchMembers();
   }, []);
   const dataMember: Member[] = getMember;
-  const dataVisit: Visit[] = getVisit;
-  console.log(getVisit);
+  // const dataVisit: Visit[] = getVisit;
 
   const inactiveMember = dataMember.filter((obj) => obj.status == `INACTIVE`).length;
   const activeMember = getMember.length - inactiveMember;
