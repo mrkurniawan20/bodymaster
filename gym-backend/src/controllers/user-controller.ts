@@ -47,7 +47,7 @@ export async function loginMember(req: Request, res: Response) {
     // const token = signToken({id : user.id, expireDate: user.expireDate})
     // res.status(200).json({ message: 'Login successfully', user });
   } catch (error: any) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ message: error.message });
   }
 }
 
@@ -138,7 +138,14 @@ export async function recordVisit(req: Request, res: Response) {
 
 export async function getLogVisit(req: Request, res: Response) {
   try {
-    const visits = await prisma.visit.findMany();
+    const visits = await prisma.visit.findMany({
+      include: {
+        member: true,
+      },
+      orderBy: {
+        visitedAt: 'desc',
+      },
+    });
     res.status(201).json(visits);
   } catch (error: any) {
     res.status(400).json({ error: error.message });
