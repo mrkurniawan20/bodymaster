@@ -82,35 +82,35 @@ import { useOutletContext } from 'react-router-dom';
 //   memberId: number;
 //   visitedAt: Date;
 // };
-type Visit = {
-  name: string;
-  time: string;
-};
+// type Visit = {
+//   name: string;
+//   time: string;
+// };
 
-function formatDate(date: Date): string {
-  return date.toLocaleDateString();
-}
+// function formatDate(date: Date): string {
+//   return date.toLocaleDateString();
+// }
 
 const ITEMS_PER_PAGE = 10;
 
 export default function VisitorLog() {
-  const { member } = useOutletContext<{ member: Member[] }>();
   const { visit } = useOutletContext<{ visit: Visitor[] }>();
-  const [visitData, setVisitData] = useState<Visitor[]>([
-    {
-      id: 0,
-      member: {
-        id: 0,
-        name: '',
-        phone: '',
-        image: '',
-        expireDate: new Date(),
-        status: 'ACTIVE',
-      },
-      memberId: 0,
-      visitedAt: new Date(),
-    },
-  ]);
+  // const { member } = useOutletContext<{ member: Member[] }>();
+  // const [visitData, setVisitData] = useState<Visitor[]>([
+  //   {
+  //     id: 0,
+  //     member: {
+  //       id: 0,
+  //       name: '',
+  //       phone: '',
+  //       image: '',
+  //       expireDate: new Date(),
+  //       status: 'ACTIVE',
+  //     },
+  //     memberId: 0,
+  //     visitedAt: new Date(),
+  //   },
+  // ]);
 
   // console.log(member);
 
