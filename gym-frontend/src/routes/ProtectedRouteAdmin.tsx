@@ -2,10 +2,12 @@ import React, { useEffect } from 'react';
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { useMember, useUser } from '@/services/useUser';
+import LoadingPage from './LoadingPage';
 // import { useUser } from '@/utils/setUser';
 
 interface DecodedProps {
   id: number;
+  role: string;
   exp: number;
 }
 
@@ -18,6 +20,7 @@ export function ProtectedRouteLayoutAdmin() {
     try {
       // console.log(decoded.exp);
       //   console.log(decoded);
+      console.log(decoded);
       return decoded.exp * 1000 < Date.now();
     } catch (error) {
       return true;
@@ -33,7 +36,7 @@ export function ProtectedRouteLayoutAdmin() {
 
   const { member, visit, todayVisit, loading } = useMember();
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingPage />;
   }
 
   if (!token) {

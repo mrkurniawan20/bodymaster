@@ -58,8 +58,9 @@ const groupByDate = (members: typeof expiredMembers) => {
 export function AdminDashboard() {
   const { member } = useOutletContext<{ member: Member[] }>();
   const { todayVisit } = useOutletContext<{ todayVisit: Visitor[] }>();
+  console.log(todayVisit);
   // const [getMember, setGetMember] = useState([]);
-  const [getVisit, setGetVisit] = useState([]);
+  // const [getVisit, setGetVisit] = useState([]);
   // useEffect(() => {
   //   async function fetchMembers() {
   //     try {
@@ -75,10 +76,10 @@ export function AdminDashboard() {
   //   }
   //   fetchMembers();
   // }, []);
-  const dataMember: Member[] = member;
+  // const dataMember: Member[] = member;
   // const dataVisit: Visit[] = getVisit;
 
-  const inactiveMember = dataMember.filter((obj) => obj.status == `INACTIVE`).length;
+  const inactiveMember = member.filter((obj) => obj.status == `INACTIVE`).length;
   const activeMember = member.length - inactiveMember;
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-6 space-y-4">
