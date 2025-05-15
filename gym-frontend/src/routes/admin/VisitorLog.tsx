@@ -77,20 +77,30 @@ import type { Member } from '@/services/useUser';
 import { useOutletContext } from 'react-router-dom';
 
 type Visitor = {
-  id:number,
+  id: number;
+  memberId: number;
+  visitedAt: Date;
+};
+type Visit = {
   name: string;
-  visitedAt: string;
+  time: string;
 };
 
-const formatDate = (date: Date): string => {
-  return date.toISOString().split('T')[0];
-};
+function formatDate(date: Date): string {
+  return date.toLocaleDateString();
+}
 
 const ITEMS_PER_PAGE = 10;
 
 export default function VisitorLog() {
   const { member } = useOutletContext<{ member: Member[] }>();
-  const [visitorData, setVisitorData] = useState<{visitorData:Visitor[]}>()
+  const [visitData, setVisitData] = useState<Visitor[]>([
+    {
+      id: 0,
+      memberId: 0,
+      visitedAt: new Date(),
+    },
+  ]);
 
   // console.log(member);
 
@@ -100,21 +110,25 @@ export default function VisitorLog() {
       try {
         const visit = await axios.get('http://127.0.0.1:3450/member/getvisitlog/');
         const visitorData = visit.data;
-        setVisitorData(visitorData)
+        setVisitData(visitorData);
       } catch (error) {}
     }
     fetchMember();
   }, []);
+  // const newVisits = visitData.map((vis) => ({
+  //   ...vis,
+  //   visitedAt: new Date(vis.visitedAt).toISOString().split('T')[0],
+  // }));
+  // console.log(newVisits);
 
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [currentPage, setCurrentPage] = useState<number>(1);
-
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(new Date(e.target.value));
     setCurrentPage(1); // Reset halaman saat ganti tanggal
   };
 
-  // const visitorData: Record<string, Visitor[]> = {
+  // const visitorData: Record<string, Visit[]> = {
   //   '2025-05-12': Array.from({ length: 100 }, (_, i) => ({
   //     name: `Visitor ${i + 1}`,
   //     time: `${9 + (i % 12)}:${(i * 7) % 60} AM`,
@@ -134,10 +148,21 @@ export default function VisitorLog() {
   //     { name: 'Bob Marley', time: '03:15 PM' },
   //   ],
   // };
+  // visitorData[]
+  // const visitors: Visit[] = visitorData[formatDate(selectedDate)] || [];
+  const visits = visitData.filter((v) => {
+    const visitDate = new Date(v.visitedAt).toLocaleDateString();
+    console.log(visitDate);
+    const selected = selectedDate.toLocaleDateString();
+    return visitDate === selected;
+  });
 
-  const visitors: Visitor[] = visitorData!.[formatDate(selectedDate)] || [];
-  const totalPages = Math.ceil(visitors.length / ITEMS_PER_PAGE);
-  const paginatedVisitors = visitors.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+  // console.log(newVisits);
+  // const totalPages = Math.ceil(newVisits.length / ITEMS_PER_PAGE);
+  // const paginatedVisitors = newVisits.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(visits.length / ITEMS_PER_PAGE);
+  const paginatedVisitors = visits.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+  console.log(paginatedVisitors);
 
   const handlePrevPage = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1));
@@ -154,7 +179,7 @@ export default function VisitorLog() {
         <h1 className="text-xl font-bold">Visitor Log</h1>
         <div className="flex items-center space-x-2">
           <Calendar className="h-5 w-5 text-gray-400" />
-          <input type="date" value={formatDate(selectedDate)} onChange={handleDateChange} className="border rounded-md px-3 py-2" />
+          <input type="date" value={selectedDate.toISOString().split('T')[0]} onChange={handleDateChange} className="border rounded-md px-3 py-2" />
         </div>
       </div>
 
@@ -165,9 +190,10 @@ export default function VisitorLog() {
             <Card key={index} className="bg-white">
               <CardContent className="py-4 px-4 flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-500">Visit Time: {visitor.time}</p>
+                  {/* <p className="text-sm text-gray-500">Visit Time: {String(visitor.visitedAt).split('T')[1].split('.')[0]}</p> */}
+                  <p className="text-sm text-gray-500">Visit Time: {new Date(visitor.visitedAt).toLocaleTimeString()}</p>
                 </div>
-                <p className="text-lg font-semibold">{visitor.name}</p>
+                <p className="text-lg font-semibold">{visitor.memberId}</p>
               </CardContent>
             </Card>
           ))
@@ -177,7 +203,7 @@ export default function VisitorLog() {
       </div>
 
       {/* Pagination */}
-      {visitors.length > ITEMS_PER_PAGE && (
+      {visits.length > ITEMS_PER_PAGE && (
         <div className="flex justify-between items-center mt-6">
           <Button variant="secondary" onClick={handlePrevPage} disabled={currentPage === 1}>
             Previous

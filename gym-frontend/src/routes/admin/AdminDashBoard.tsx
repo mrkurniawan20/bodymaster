@@ -56,16 +56,16 @@ const groupByDate = (members: typeof expiredMembers) => {
 };
 
 export function AdminDashboard() {
-  // const { member } = useOutletContext<{ member: User[] }>();
-  const [getMember, setGetMember] = useState([]);
+  const { member } = useOutletContext<{ member: Member[] }>();
+  // const [getMember, setGetMember] = useState([]);
   const [getVisit, setGetVisit] = useState([]);
   useEffect(() => {
     async function fetchMembers() {
       try {
-        const member = await axios.get('http://127.0.0.1:3450/member/getallmember/');
-        setGetMember(member.data);
-        if (!localStorage.getItem('members')) {
-        }
+        // const member = await axios.get('http://127.0.0.1:3450/member/getallmember/');
+        // setGetMember(member.data);
+        // if (!localStorage.getItem('members')) {
+        // }
         const visit = await axios.get('http://127.0.0.1:3450/member/getTodayVisit/');
         setGetVisit(visit.data);
       } catch (error: any) {
@@ -74,11 +74,11 @@ export function AdminDashboard() {
     }
     fetchMembers();
   }, []);
-  const dataMember: Member[] = getMember;
+  const dataMember: Member[] = member;
   // const dataVisit: Visit[] = getVisit;
 
   const inactiveMember = dataMember.filter((obj) => obj.status == `INACTIVE`).length;
-  const activeMember = getMember.length - inactiveMember;
+  const activeMember = member.length - inactiveMember;
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-6 space-y-4">
       {/* Header */}
