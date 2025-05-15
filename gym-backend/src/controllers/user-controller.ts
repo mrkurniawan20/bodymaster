@@ -105,6 +105,32 @@ export async function editMember(req: Request, res: Response) {
   }
 }
 
+export async function extendMember(req: Request, res: Response) {
+  try {
+    const { id } = req.body;
+    // const monthExtend =
+    const user = await prisma.member.findFirst({
+      where: {
+        id,
+      },
+    });
+    if (!user) {
+      res.status(400).json({ message: 'User does not exist' });
+      return;
+    }
+    const monthExtend = addMonths(user?.expireDate, 1);
+    const extend = await prisma.member.update({
+      where: { id },
+      data: {
+        expireDate: monthExtend,
+      },
+    });
+    res.status(200).json(extend);
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
 export async function recordVisit(req: Request, res: Response) {
   try {
     const id = Number(req.params.id);
