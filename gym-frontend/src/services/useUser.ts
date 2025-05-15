@@ -68,8 +68,8 @@ export function useMember() {
     try {
       setLoading(true);
       const fetchAllMember = axios.get(`http://127.0.0.1:3450/member/getallmember/`, { headers: { Authorization: `Bearer ${token}` } });
-      const fetchVisitLog = axios.get('http://127.0.0.1:3450/member/getvisitlog/');
-      const fetchTodayVisit = axios.get('http://127.0.0.1:3450/member/getTodayVisit/');
+      const fetchVisitLog = axios.get('http://127.0.0.1:3450/member/getvisitlog/', { headers: { Authorization: `Bearer ${token}` } });
+      const fetchTodayVisit = axios.get('http://127.0.0.1:3450/member/getTodayVisit/', { headers: { Authorization: `Bearer ${token}` } });
       Promise.all([fetchAllMember, fetchVisitLog, fetchTodayVisit])
         .then(([allMemberRes, visitLogRes, todayVisitRes]) => {
           setMember(allMemberRes.data), setVisit(visitLogRes.data), setTodayVisit(todayVisitRes.data);

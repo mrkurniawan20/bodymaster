@@ -15,13 +15,14 @@ export function ProtectedRouteLayoutAdmin() {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
+  const decoded = jwtDecode<DecodedProps>(token!);
   function isTokenExpired(token: string): boolean {
-    const decoded = jwtDecode<DecodedProps>(token);
     try {
+      const decodedData = jwtDecode<DecodedProps>(token!);
       // console.log(decoded.exp);
       //   console.log(decoded);
-      console.log(decoded);
-      return decoded.exp * 1000 < Date.now();
+      console.log(decodedData);
+      return decodedData.exp * 1000 < Date.now();
     } catch (error) {
       return true;
     }
@@ -38,8 +39,8 @@ export function ProtectedRouteLayoutAdmin() {
   if (loading) {
     return <LoadingPage />;
   }
-
-  if (!token) {
+  console.log(decoded.role);
+  if (decoded.role !== 'ADMIN') {
     return <Navigate to={'/'} />;
   } else {
     return <Outlet context={{ member, visit, todayVisit }} />;
