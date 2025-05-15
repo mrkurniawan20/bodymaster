@@ -13,4 +13,4 @@ routerUser.patch('/editMember/:id', uploads.none(), editMember);
 routerUser.post('/visit/:id', recordVisit);
 routerUser.get('/getTodayVisit', getTodayVisit);
 routerUser.get('/getVisitLog', getLogVisit);
-routerUser.post('/extendMember', extendMember);
+routerUser.post('/extendMember', uploads.none(), extendMember);

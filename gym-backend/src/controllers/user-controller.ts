@@ -109,7 +109,7 @@ export async function extendMember(req: Request, res: Response) {
   try {
     const { id } = req.body;
     // const monthExtend =
-    const user = await prisma.member.findFirst({
+    const user = await prisma.member.findUnique({
       where: {
         id,
       },
