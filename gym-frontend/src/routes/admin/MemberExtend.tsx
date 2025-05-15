@@ -103,7 +103,7 @@ export default function MemberExtend() {
           {!buttonDisable && <div className="flex items-center justify-between font-bold">{<p>{`${member.find((m) => m.id === Number(formData.id))?.name ?? 'MEMBER TIDAK ADA '}`}</p>}</div>}
           {buttonDisable ? (
             <Button type="submit" className="w-full" disabled>
-              Extend
+              Please Check Name First
             </Button>
           ) : (
             <Button type="submit" className="w-full">

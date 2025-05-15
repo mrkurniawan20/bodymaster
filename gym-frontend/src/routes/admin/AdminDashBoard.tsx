@@ -119,15 +119,17 @@ export function AdminDashboard() {
           </CardContent>
         </Card>
 
-        <Card className="bg-white">
-          <CardContent className="py-4 px-4 flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-500">Visits Today</p>
-              <p className="text-xl font-semibold">{todayVisit.length}</p>
-            </div>
-            <CalendarDays className="h-6 w-6 text-gray-400" />
-          </CardContent>
-        </Card>
+        <NavLink to={'/visitor'}>
+          <Card className="bg-white">
+            <CardContent className="py-4 px-4 flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500">Visits Today</p>
+                <p className="text-xl font-semibold">{todayVisit.length}</p>
+              </div>
+              <CalendarDays className="h-6 w-6 text-gray-400" />
+            </CardContent>
+          </Card>
+        </NavLink>
       </div>
 
       {/* Quick Navigation */}
@@ -137,9 +139,9 @@ export function AdminDashboard() {
             Payment Log
           </Button>
         </NavLink>
-        <NavLink to={'/visitor'}>
+        <NavLink to={'/extendmember'}>
           <Button className="w-full" variant="secondary">
-            Visitor Log
+            Extend Member
           </Button>
         </NavLink>
         <NavLink to={'/memberlist'}>
