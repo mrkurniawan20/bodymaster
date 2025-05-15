@@ -13,6 +13,12 @@ export interface Member {
   expireDate: Date;
   status: string;
 }
+export interface Visitor {
+  id: number;
+  member: Member;
+  memberId: number;
+  visitedAt: Date;
+}
 export interface MemberProps {
   user: Member;
 }
@@ -50,6 +56,8 @@ export function useUser() {
 
 export function useMember() {
   const [member, setMember] = useState<Member[] | null>(null);
+  const [visit, setVisit] = useState<Visitor[] | null>(null);
+  const [todayVisit, setTodayVisit] = useState<[] | null>(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -66,10 +74,26 @@ export function useMember() {
           localStorage.removeItem('token');
         })
         .finally(() => setLoading(false));
+      axios
+        .get('http://127.0.0.1:3450/member/getvisitlog/')
+        .then((res) => setVisit(res.data))
+        .catch((err) => {
+          console.log(`Failed to fetch user ${err}`);
+          localStorage.removeItem('token');
+        })
+        .finally(() => setLoading(false));
+      axios
+        .get('http://127.0.0.1:3450/member/getTodayVisit/')
+        .then((res) => setTodayVisit(res.data))
+        .catch((err) => {
+          console.log(`Failed to fetch user ${err}`);
+          localStorage.removeItem('token');
+        })
+        .finally(() => setLoading(false));
     } catch (error) {
       console.log('Unable to fetch user');
       localStorage.removeItem('token');
     }
   }, []);
-  return { member, loading };
+  return { member, visit, todayVisit, loading };
 }

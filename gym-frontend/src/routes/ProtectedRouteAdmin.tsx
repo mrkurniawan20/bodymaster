@@ -31,7 +31,7 @@ export function ProtectedRouteLayoutAdmin() {
     }
   }, [title]);
 
-  const { member, loading } = useMember();
+  const { member, visit, todayVisit, loading } = useMember();
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -39,6 +39,6 @@ export function ProtectedRouteLayoutAdmin() {
   if (!token) {
     return <Navigate to={'/'} />;
   } else {
-    return <Outlet context={{ member }} />;
+    return <Outlet context={{ member, visit, todayVisit }} />;
   }
 }

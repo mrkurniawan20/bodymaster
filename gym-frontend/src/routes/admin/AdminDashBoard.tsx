@@ -7,7 +7,7 @@ import axios from 'axios';
 import { getAllMember } from '@/services/api';
 import type { Response } from 'express';
 import { useEffect, useState } from 'react';
-import type { Member } from '@/services/useUser';
+import type { Member, Visitor } from '@/services/useUser';
 
 const expiredMembers = [
   { id: 1, name: 'John Doe', expiredAt: '2025-05-01' },
@@ -57,23 +57,24 @@ const groupByDate = (members: typeof expiredMembers) => {
 
 export function AdminDashboard() {
   const { member } = useOutletContext<{ member: Member[] }>();
+  const { todayVisit } = useOutletContext<{ todayVisit: Visitor[] }>();
   // const [getMember, setGetMember] = useState([]);
   const [getVisit, setGetVisit] = useState([]);
-  useEffect(() => {
-    async function fetchMembers() {
-      try {
-        // const member = await axios.get('http://127.0.0.1:3450/member/getallmember/');
-        // setGetMember(member.data);
-        // if (!localStorage.getItem('members')) {
-        // }
-        const visit = await axios.get('http://127.0.0.1:3450/member/getTodayVisit/');
-        setGetVisit(visit.data);
-      } catch (error: any) {
-        console.log(error);
-      }
-    }
-    fetchMembers();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchMembers() {
+  //     try {
+  //       // const member = await axios.get('http://127.0.0.1:3450/member/getallmember/');
+  //       // setGetMember(member.data);
+  //       // if (!localStorage.getItem('members')) {
+  //       // }
+  //       const visit = await axios.get('http://127.0.0.1:3450/member/getTodayVisit/');
+  //       setGetVisit(visit.data);
+  //     } catch (error: any) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   fetchMembers();
+  // }, []);
   const dataMember: Member[] = member;
   // const dataVisit: Visit[] = getVisit;
 
@@ -122,7 +123,7 @@ export function AdminDashboard() {
           <CardContent className="py-4 px-4 flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Visits Today</p>
-              <p className="text-xl font-semibold">{getVisit.length}</p>
+              <p className="text-xl font-semibold">{todayVisit.length}</p>
             </div>
             <CalendarDays className="h-6 w-6 text-gray-400" />
           </CardContent>

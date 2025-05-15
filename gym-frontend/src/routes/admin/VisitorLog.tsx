@@ -73,14 +73,15 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import type { Member } from '@/services/useUser';
+import type { Member, Visitor } from '@/services/useUser';
 import { useOutletContext } from 'react-router-dom';
 
-type Visitor = {
-  id: number;
-  memberId: number;
-  visitedAt: Date;
-};
+// type Visitor = {
+//   id: number;
+//   member: Member;
+//   memberId: number;
+//   visitedAt: Date;
+// };
 type Visit = {
   name: string;
   time: string;
@@ -94,9 +95,18 @@ const ITEMS_PER_PAGE = 10;
 
 export default function VisitorLog() {
   const { member } = useOutletContext<{ member: Member[] }>();
+  const { visit } = useOutletContext<{ visit: Visitor[] }>();
   const [visitData, setVisitData] = useState<Visitor[]>([
     {
       id: 0,
+      member: {
+        id: 0,
+        name: '',
+        phone: '',
+        image: '',
+        expireDate: new Date(),
+        status: 'ACTIVE',
+      },
       memberId: 0,
       visitedAt: new Date(),
     },
@@ -105,16 +115,16 @@ export default function VisitorLog() {
   // console.log(member);
 
   // const [members, setMembers] = useState([]);
-  useEffect(() => {
-    async function fetchMember() {
-      try {
-        const visit = await axios.get('http://127.0.0.1:3450/member/getvisitlog/');
-        const visitorData = visit.data;
-        setVisitData(visitorData);
-      } catch (error) {}
-    }
-    fetchMember();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchMember() {
+  //     try {
+  //       const visit = await axios.get('http://127.0.0.1:3450/member/getvisitlog/');
+  //       const visitorData = visit.data;
+  //       setVisitData(visitorData);
+  //     } catch (error) {}
+  //   }
+  //   fetchMember();
+  // }, []);
   // const newVisits = visitData.map((vis) => ({
   //   ...vis,
   //   visitedAt: new Date(vis.visitedAt).toISOString().split('T')[0],
@@ -150,19 +160,19 @@ export default function VisitorLog() {
   // };
   // visitorData[]
   // const visitors: Visit[] = visitorData[formatDate(selectedDate)] || [];
-  const visits = visitData.filter((v) => {
+  const visits = visit.filter((v) => {
     const visitDate = new Date(v.visitedAt).toLocaleDateString();
-    console.log(visitDate);
+    // console.log(visitDate);
     const selected = selectedDate.toLocaleDateString();
     return visitDate === selected;
   });
-
+  // console.log(visit);
   // console.log(newVisits);
   // const totalPages = Math.ceil(newVisits.length / ITEMS_PER_PAGE);
   // const paginatedVisitors = newVisits.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
   const totalPages = Math.ceil(visits.length / ITEMS_PER_PAGE);
   const paginatedVisitors = visits.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
-  console.log(paginatedVisitors);
+  // console.log(paginatedVisitors);
 
   const handlePrevPage = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1));
@@ -193,7 +203,7 @@ export default function VisitorLog() {
                   {/* <p className="text-sm text-gray-500">Visit Time: {String(visitor.visitedAt).split('T')[1].split('.')[0]}</p> */}
                   <p className="text-sm text-gray-500">Visit Time: {new Date(visitor.visitedAt).toLocaleTimeString()}</p>
                 </div>
-                <p className="text-lg font-semibold">{visitor.memberId}</p>
+                <p className="text-lg font-semibold">{visitor.member.name}</p>
               </CardContent>
             </Card>
           ))
