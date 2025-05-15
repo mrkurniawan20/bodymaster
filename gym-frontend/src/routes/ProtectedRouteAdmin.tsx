@@ -14,6 +14,9 @@ interface DecodedProps {
 export function ProtectedRouteLayoutAdmin() {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
+  if (!token) {
+    return <Navigate to={'/'} />;
+  }
 
   const decoded = jwtDecode<DecodedProps>(token!);
   function isTokenExpired(token: string): boolean {
@@ -21,7 +24,6 @@ export function ProtectedRouteLayoutAdmin() {
       const decodedData = jwtDecode<DecodedProps>(token!);
       // console.log(decoded.exp);
       //   console.log(decoded);
-      console.log(decodedData);
       return decodedData.exp * 1000 < Date.now();
     } catch (error) {
       return true;
@@ -39,7 +41,7 @@ export function ProtectedRouteLayoutAdmin() {
   if (loading) {
     return <LoadingPage />;
   }
-  console.log(decoded.role);
+
   if (decoded.role !== 'ADMIN') {
     return <Navigate to={'/'} />;
   } else {

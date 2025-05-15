@@ -12,6 +12,7 @@ import MemberListDummy from './admin/MemberListDummy';
 import PaymentPage from './admin/Payment';
 import { ProtectedRouteLayoutAdmin } from './ProtectedRouteAdmin';
 import MemberList from './admin/MemberList';
+import MemberExtend from './admin/MemberExtend';
 
 export let router = createBrowserRouter([
   {
@@ -53,6 +54,10 @@ export let router = createBrowserRouter([
       {
         path: '/payment',
         Component: PaymentPage,
+      },
+      {
+        path: '/extendmember',
+        Component: MemberExtend,
       },
     ],
   },

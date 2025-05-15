@@ -6,21 +6,21 @@ import { useParams, useNavigate, useOutletContext } from 'react-router-dom';
 import axios from 'axios';
 import type { Member } from '@/services/useUser';
 
-export default function EditMemberPage() {
+export default function MemberExtend() {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
-  const { user } = useOutletContext<{ user: Member }>();
-  const { id } = useParams(); // ambil ID dari URL
-  useEffect(() => {
-    if (user.id !== Number(id)) {
-      navigate('/landingpage');
-    }
-  }, []);
+
+  const { member } = useOutletContext<{ member: Member[] }>();
+  console.log(member);
+  // const { id } = ; // ambil ID dari URL
+  // useEffect(() => {
+  //   if (user.id !== Number(id)) {
+  //     navigate('/landingpage');
+  //   }
+  // }, []);
 
   const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    password: '',
+    id: '',
   });
   // setFormData({
   //   name: user.name,
@@ -63,6 +63,7 @@ export default function EditMemberPage() {
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     console.log(formData);
+    setButtonDisable(true);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
 
@@ -70,14 +71,19 @@ export default function EditMemberPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.patch(`http://127.0.0.1:3450/member/editmember/${id}`, formData);
-      navigate('/landingpage');
+      await axios.patch(`http://localhost:3450/member/extendmember/`, formData);
+      navigate('/dashboard');
     } catch (err) {
       console.error('Update failed:', err);
     } finally {
       setLoading(false);
     }
   };
+  const [buttonDisable, setButtonDisable] = useState(true);
+  function handleClick(e: React.MouseEvent) {
+    e.preventDefault();
+    setButtonDisable(false);
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-6">
@@ -86,26 +92,23 @@ export default function EditMemberPage() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <Label htmlFor="name" className="mb-2">
-              Nama
+              Member ID
             </Label>
-            <Input id="name" name="name" value={formData.name} onChange={handleChange} placeholder="Nama" />
+            <div className="flex">
+              <Input id="id" name="id" value={formData.id} onChange={handleChange} placeholder="ID" type="number" />
+              <Button onClick={handleClick}>Check Name</Button>
+            </div>
           </div>
-          <div>
-            <Label htmlFor="phone" className="mb-2">
-              Phone
-            </Label>
-            <Input id="phone" name="phone" value={formData.phone} onChange={handleChange} placeholder="08xxxxxxxxxx" type="tel" />
-          </div>
-          <div>
-            <Label htmlFor="password" className="mb-2">
-              Password
-            </Label>
-            <Input id="password" name="password" value={formData.password} onChange={handleChange} placeholder="••••••••" type="password" />
-          </div>
-          <div className="flex items-center justify-between"></div>
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? 'Saving...' : 'Save'}
-          </Button>
+          {!buttonDisable && <div className="flex items-center justify-between">{<p>{`Member name : ${member.find((m) => m.id === Number(formData.id))?.name}`}</p>}</div>}
+          {buttonDisable ? (
+            <Button type="submit" className="w-full" disabled>
+              Save
+            </Button>
+          ) : (
+            <Button type="submit" className="w-full">
+              Save
+            </Button>
+          )}
         </form>
       </div>
     </div>

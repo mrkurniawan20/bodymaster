@@ -22,15 +22,16 @@ export default function GymLoginMobile() {
     console.log(formData);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
+  const [hidden, setHidden] = useState('hidden');
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-
     try {
       // const res = await axios.post('http://127.0.0.1:3450/member/loginmember/', formData);
       const res = await loginMember(formData);
       console.log(res.data);
       const token = res.data.loggedInMember.token;
       const user = res.data.loggedInMember.user;
+      const message = res.data.message;
       // const user = res.data.loggedInMember.user;
       localStorage.setItem('token', token);
       // console.log(user);
@@ -44,7 +45,8 @@ export default function GymLoginMobile() {
         navigate('/landingpage');
       }
     } catch (error: any) {
-      console.log(error.message);
+      setHidden('');
+      console.log('salah');
     }
   }
   return (
@@ -77,7 +79,7 @@ export default function GymLoginMobile() {
               Login
             </Button>
           </form>
-
+          <p className={`text-center bg-red-400 p-2 rounded-md text-white ${hidden}`}>Password incorrect!</p>
           <p className="text-center text-md text-gray-500">
             Hanya visit? <br /> <span className="text-blue-600 ">Silakan hubungi instruktur</span>
           </p>

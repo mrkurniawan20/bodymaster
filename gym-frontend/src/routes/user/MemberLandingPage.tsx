@@ -1,11 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import type { User } from '@/services/useUser';
+import type { Member } from '@/services/useUser';
 
 export default function MemberLandingPage() {
   const navigate = useNavigate();
-  const { user } = useOutletContext<{ user: User }>();
+  const { user } = useOutletContext<{ user: Member }>();
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">

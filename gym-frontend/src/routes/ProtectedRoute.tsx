@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { useUser } from '@/services/useUser';
+import LoadingPage from './LoadingPage';
 // import { useUser } from '@/utils/setUser';
 
 interface DecodedProps {
@@ -33,7 +34,7 @@ function ProtectedRouteLayout() {
 
   const { user, loading } = useUser();
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingPage />;
   }
 
   if (!token) {

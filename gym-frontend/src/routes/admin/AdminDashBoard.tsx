@@ -58,7 +58,6 @@ const groupByDate = (members: typeof expiredMembers) => {
 export function AdminDashboard() {
   const { member } = useOutletContext<{ member: Member[] }>();
   const { todayVisit } = useOutletContext<{ todayVisit: Visitor[] }>();
-  console.log(todayVisit);
   // const [getMember, setGetMember] = useState([]);
   // const [getVisit, setGetVisit] = useState([]);
   // useEffect(() => {
