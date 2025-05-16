@@ -11,7 +11,6 @@ export default function MemberExtend() {
   const token = localStorage.getItem('token');
 
   const { member } = useOutletContext<{ member: Member[] }>();
-  console.log(member);
   // const { id } = ; // ambil ID dari URL
   // useEffect(() => {
   //   if (user.id !== Number(id)) {
@@ -20,7 +19,7 @@ export default function MemberExtend() {
   // }, []);
 
   const [formData, setFormData] = useState({
-    id: undefined,
+    id: '',
   });
   // const [id, setId] = useState('');
   // setFormData({
