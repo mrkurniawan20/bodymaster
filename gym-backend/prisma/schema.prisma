@@ -20,6 +20,7 @@ model Member {
   password    String
   phone       String
   image       String?
+  category    Category 
   joinDate    DateTime @default(now())
   expireDate  DateTime
   status      Status   @default(ACTIVE)
@@ -27,6 +28,12 @@ model Member {
   updatedAt   DateTime @updatedAt
   visit Visit[]
   @@index ([id, expireDate])
+}
+
+enum Category {
+  REGULAR
+  WANITA
+  PELAJAR
 }
 
 enum Status {
