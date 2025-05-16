@@ -8,17 +8,28 @@ import { login } from '../services/userService';
 
 export async function addMember(req: Request, res: Response) {
   try {
-    const { name, id, password, phone } = req.body;
+    const { name, id, password, phone, category } = req.body;
+    let pics = '';
+    if (category === 'REGULAR') {
+      pics = '/src/assets/img/man.png';
+    } else if (category === 'WANITA') {
+      pics = '/src/assets/img/woman.png';
+    } else {
+      pics = '/src/assets/img/child.jpg';
+    }
+    const numberId = Number(id);
     const hashed = await bcrypt.hash(password, saltRounds);
     const joinDate = new Date();
     const expireDate = addMonths(joinDate, 1);
     const add = await prisma.member.create({
       data: {
         name,
-        id,
+        image: pics,
+        id: numberId,
         password: hashed,
         phone,
         expireDate,
+        category,
       },
     });
     res.status(201).json({ add });
@@ -60,6 +71,7 @@ export async function getAllMember(req: Request, res: Response) {
         password: true,
         role: true,
       },
+      orderBy: { expireDate: 'desc' },
     });
     res.status(200).json(members);
   } catch (error: any) {
@@ -108,10 +120,11 @@ export async function editMember(req: Request, res: Response) {
 export async function extendMember(req: Request, res: Response) {
   try {
     const { id } = req.body;
+    const numberId = Number(id);
     // const monthExtend =
     const user = await prisma.member.findUnique({
       where: {
-        id,
+        id: numberId,
       },
     });
     if (!user) {
