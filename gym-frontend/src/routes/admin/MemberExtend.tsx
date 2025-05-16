@@ -5,66 +5,24 @@ import { Button } from '@/components/ui/button';
 import { useParams, useNavigate, useOutletContext } from 'react-router-dom';
 import axios from 'axios';
 import type { Member } from '@/services/useUser';
+import IncorrectPassword from '@/components/IncorrectPassword';
 
 export default function MemberExtend() {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
   const { member } = useOutletContext<{ member: Member[] }>();
-  // const { id } = ; // ambil ID dari URL
-  // useEffect(() => {
-  //   if (user.id !== Number(id)) {
-  //     navigate('/landingpage');
-  //   }
-  // }, []);
 
   const [formData, setFormData] = useState({
     id: '',
   });
-  // const [id, setId] = useState('');
-  // setFormData({
-  //   name: user.name,
-  //   phone: user.phone,
-  //   password: '',
-  // });
 
   const [loading, setLoading] = useState(false);
-
-  // Fetch data member berdasarkan ID
-  // useEffect(() => {
-  //   const fetchMember = async () => {
-  //     try {
-  //       const res = await axios.get(`http://127.0.0.1:3450/member/getmember/${id}`, {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-  //       setFormData({
-  //         name: res.data.name || '',
-  //         phone: res.data.phone || '',
-  //         password: '',
-  //       });
-  //     } catch (err) {
-  //       console.error('Error fetching member:', err);
-  //       navigate('/landingpage');
-  //     }
-  //   };
-
-  //   fetchMember();
-  // }, [id]);
-
-  //   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //     const { name, value } = e.target;
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       [name]: value,
-  //     }));
-  //   };
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     console.log(formData);
     setButtonDisable(true);
-    setFormData({ ...formData, [e.target.name]: Number(e.target.value) });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -77,6 +35,7 @@ export default function MemberExtend() {
       console.error('Update failed:', err);
     } finally {
       setLoading(false);
+      window.location.reload();
     }
   };
   const [buttonDisable, setButtonDisable] = useState(true);
@@ -84,7 +43,6 @@ export default function MemberExtend() {
     e.preventDefault();
     setButtonDisable(false);
   }
-  // console.log(formData);
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-6">
       <div className="max-w-md mx-auto bg-white shadow-md rounded-lg p-6">
@@ -95,11 +53,19 @@ export default function MemberExtend() {
               Member ID
             </Label>
             <div className="flex">
-              <Input id="id" name="id" value={formData.id} onChange={handleChange} placeholder="ID" /> &ensp;
+              <Input id="id" name="id" value={formData.id} onChange={handleChange} placeholder="ID" type="text" /> &ensp;
               <Button onClick={handleClick}>Check Name</Button>
             </div>
           </div>
-          {!buttonDisable && <div className="flex items-center justify-between font-bold">{<p>{`${member.find((m) => m.id === Number(formData.id))?.name ?? 'MEMBER TIDAK ADA '}`}</p>}</div>}
+          {!buttonDisable && (
+            <div className="flex items-center justify-between font-bold">
+              {member.find((m) => m.id === Number(formData.id))?.name ? (
+                <p className="text-sm text-green-600 bg-green-100 border border-green-300 rounded-md p-2 text-center my-4 mx-auto">{`Member Name : ${member.find((m) => m.id === Number(formData.id))?.name}`}</p>
+              ) : (
+                <p className="text-sm text-red-600 bg-red-100 border border-red-300 rounded-md p-2 text-center my-4 mx-auto">Member tidak ada</p>
+              )}
+            </div>
+          )}
           {buttonDisable ? (
             <Button type="submit" className="w-full" disabled>
               Please Check Name First

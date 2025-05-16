@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { loginMember } from '@/services/api';
+import IncorrectPassword from '@/components/IncorrectPassword';
 
 export default function GymLoginMobile() {
   const token = localStorage.getItem('token');

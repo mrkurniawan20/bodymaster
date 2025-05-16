@@ -35,10 +35,10 @@ export default function AddMember() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-  const handleChangeID = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: Number(value) }));
-  };
+  // const handleChangeID = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prev) => ({ ...prev, [name]: Number(value) }));
+  // };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,7 +82,7 @@ export default function AddMember() {
             </div>
             <div>
               <Label htmlFor="id">Member ID</Label>
-              <Input id="id" name="id" value={formData.id} onChange={handleChangeID} placeholder="Enter member ID" required className="mt-2" />
+              <Input id="id" name="id" value={formData.id} onChange={handleChange} placeholder="Enter member ID" required className="mt-2" />
             </div>
             <div>
               <Label htmlFor="password">Password</Label>

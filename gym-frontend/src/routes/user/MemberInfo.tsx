@@ -66,7 +66,7 @@ export function MemberInfoPage() {
           <img
             src={`${user.image}`} // Replace with the actual image URL
             alt="Rafli Kurniawan"
-            className="w-70 h-90 rounded-xl object-cover shadow-xl"
+            className="w-80 h-90 rounded-xl object-cover shadow-xl"
           />
         </div>
         <h2 className="m-0 text-3xl font-semibold">{user.name.toUpperCase()}</h2>
