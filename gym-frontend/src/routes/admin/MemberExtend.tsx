@@ -6,6 +6,7 @@ import { useParams, useNavigate, useOutletContext } from 'react-router-dom';
 import axios from 'axios';
 import type { Member } from '@/services/useUser';
 import IncorrectPassword from '@/components/IncorrectPassword';
+import { Checkbox } from '@/components/ui/checkbox';
 
 export default function MemberExtend() {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ export default function MemberExtend() {
 
   const [formData, setFormData] = useState({
     id: '',
+    method: '',
   });
 
   const [loading, setLoading] = useState(false);
@@ -55,6 +57,42 @@ export default function MemberExtend() {
             <div className="flex">
               <Input id="id" name="id" value={formData.id} onChange={handleChange} placeholder="ID" type="text" /> &ensp;
               <Button onClick={handleClick}>Check ID</Button>
+            </div>
+            <div className="mt-2">
+              <Label htmlFor="category">Pembayaran</Label>
+              {/* <Input id="category" name="category" value={form.category} onChange={handleChange} placeholder="08xxxxxxxxxx" required className="mt-2" /> */}
+              <div className="flex items-center">
+                <Checkbox
+                  id="qr"
+                  name="qr"
+                  checked={formData.method === 'QR'}
+                  onCheckedChange={(checked) => {
+                    console.log(formData);
+                    if (checked) setFormData((prev) => ({ ...prev, method: 'QR' }));
+                  }}
+                  className="mt-2"
+                />
+                <label htmlFor="reguler" className="items-center ml-2 mt-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  QR
+                </label>
+                {/* <div className="grid gap-1.5 leading-none mt-2"></div> */}
+              </div>
+              <div className="flex items-center">
+                <Checkbox
+                  id="cash"
+                  name="cash"
+                  checked={formData.method === 'CASH'}
+                  onCheckedChange={(checked) => {
+                    console.log(formData);
+                    if (checked) setFormData((prev) => ({ ...prev, method: 'CASH' }));
+                  }}
+                  className="mt-2"
+                />
+                <label htmlFor="wanita" className="items-center ml-2 mt-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  Cash
+                </label>
+                {/* <div className="grid gap-1.5 leading-none mt-2"></div> */}
+              </div>
             </div>
           </div>
           {/* {!buttonDisable && (
