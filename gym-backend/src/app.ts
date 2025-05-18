@@ -2,6 +2,8 @@ import express from 'express';
 import { routerUser } from './routers/user-router';
 // import { routerPost } from './router/post-router';
 import cors from 'cors';
+import cron from 'node-cron';
+import { CronJob } from './utils/cronJobs';
 
 const app = express();
 const PORT = 3450;
@@ -13,6 +15,8 @@ const options: cors.CorsOptions = {
 };
 app.use(express.json());
 app.use(cors(options));
+
+CronJob();
 
 app.use('/member', routerUser);
 // app.use('/post', routerPost);

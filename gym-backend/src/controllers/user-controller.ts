@@ -121,7 +121,6 @@ export async function extendMember(req: Request, res: Response) {
   try {
     const { id } = req.body;
     const numberId = Number(id);
-    // const monthExtend =
     const user = await prisma.member.findUnique({
       where: {
         id: numberId,
@@ -133,7 +132,7 @@ export async function extendMember(req: Request, res: Response) {
     }
     const monthExtend = addMonths(user?.expireDate, 1);
     const extend = await prisma.member.update({
-      where: { id },
+      where: { id: user.id },
       data: {
         expireDate: monthExtend,
       },
