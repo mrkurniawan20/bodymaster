@@ -119,7 +119,7 @@ export async function editMember(req: Request, res: Response) {
 
 export async function extendMember(req: Request, res: Response) {
   try {
-    const { id } = req.body;
+    const { id, method } = req.body;
     const numberId = Number(id);
     const user = await prisma.member.findUnique({
       where: {
@@ -131,13 +131,38 @@ export async function extendMember(req: Request, res: Response) {
       return;
     }
     const monthExtend = addMonths(user?.expireDate, 1);
-    const extend = await prisma.member.update({
-      where: { id: user.id },
-      data: {
-        expireDate: monthExtend,
-      },
-    });
-    res.status(200).json(extend);
+    // const extend = await prisma.member.update({
+    //   where: { id: user.id },
+    //   data: {
+    //     expireDate: monthExtend,
+    //   },
+    // });
+    let amount = 0;
+    if (user.category == 'PELAJAR') {
+      amount = 185000;
+    } else if (user.category == 'WANITA') {
+      amount = 190000;
+    } else {
+      amount = 210000;
+    }
+    const extendWithPayment = await prisma.$transaction([
+      prisma.member.update({
+        where: { id: user.id },
+        data: {
+          expireDate: monthExtend,
+          status: 'ACTIVE',
+        },
+      }),
+      prisma.payment.create({
+        data: {
+          amount,
+          method,
+          name: 'Perpanjang Member',
+          memberId: user.id,
+        },
+      }),
+    ]);
+    res.status(200).json(extendWithPayment);
   } catch (error: any) {
     res.status(400).json({ error: error.message });
   }
