@@ -136,7 +136,8 @@ export default function PaymentPage() {
           <table className="min-w-full table-auto text-sm">
             <thead className="bg-gray-200 text-left text-xs uppercase font-semibold text-gray-600">
               <tr>
-                <th className="px-4 py-2">Member</th>
+                <th className="px-4 py-2">ID</th>
+                <th className="px-4 py-2">Keterangan</th>
                 <th className="px-4 py-2">Amount</th>
                 <th className="px-4 py-2">Method</th>
               </tr>
@@ -144,8 +145,9 @@ export default function PaymentPage() {
             <tbody>
               {paginated.map((p) => (
                 <tr key={p.id} className="border-b">
+                  <td className="px-4 py-2">{p.member.split(' ')[1]}</td>
                   <td className="px-4 py-2">{p.member}</td>
-                  <td className="px-4 py-2">Rp {p.amount.toLocaleString()}</td>
+                  <td className="px-4 py-2">{p.amount.toLocaleString()}</td>
                   <td className="px-4 py-2">{p.method}</td>
                 </tr>
               ))}
