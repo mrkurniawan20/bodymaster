@@ -27,6 +27,7 @@ model Member {
   role        Role      @default(MEMBER)
   updatedAt   DateTime @updatedAt
   visit Visit[]
+  payment Payment[]
   @@index ([id, expireDate])
 }
 
@@ -53,4 +54,18 @@ model Visit{
   visitedAt DateTime @default(now())
 
   @@index ([memberId, visitedAt])
+}
+
+model Payment{
+  id    Int @id @default(autoincrement())
+  amount Int
+  memberId Int
+  member Member @relation(fields: [memberId], references: [id])
+  paymentAt DateTime @default(now())
+  method Method 
+}
+
+enum Method {
+  QR
+  CASH 
 }
