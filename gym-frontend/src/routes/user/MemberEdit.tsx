@@ -70,7 +70,7 @@ export default function EditMemberPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.patch(`http://127.0.0.1:3450/member/editmember/${id}`, formData);
+      await axios.patch(`http://127.0.0.1:3450/member/editmember/${id}`, formData, { headers: { Authorization: `Bearer ${token}` } });
       navigate('/landingpage');
     } catch (err) {
       console.error('Update failed:', err);

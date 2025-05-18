@@ -42,7 +42,7 @@ export default function GymLoginMobile() {
       if (user.role == `ADMIN`) {
         navigate('/dashboard');
       } else {
-        await axios.post(`http://127.0.0.1:3450/member/visit/${user.id}`);
+        // await axios.post(`http://127.0.0.1:3450/member/visit/${user.id}`, { headers: { Authorization: `Bearer ${token}` } });
         navigate('/landingpage');
       }
     } catch (error: any) {

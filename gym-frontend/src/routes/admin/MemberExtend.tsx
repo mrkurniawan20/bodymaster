@@ -29,7 +29,7 @@ export default function MemberExtend() {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post(`http://localhost:3450/member/extendmember/`, formData);
+      await axios.post(`http://localhost:3450/member/extendmember/`, formData, { headers: { Authorization: `Bearer ${token}` } });
       navigate('/dashboard');
       window.location.reload();
     } catch (err: any) {
@@ -46,7 +46,7 @@ export default function MemberExtend() {
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-6">
       <div className="max-w-md mx-auto bg-white shadow-md rounded-lg p-6">
-        <h2 className="text-2xl font-bold mb-4 text-center">Edit Member</h2>
+        <h2 className="text-2xl font-bold mb-4 text-center">Extend Member</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <Label htmlFor="name" className="mb-2">
