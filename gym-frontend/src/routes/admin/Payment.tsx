@@ -6,37 +6,49 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { useOutletContext } from 'react-router-dom';
+import type { Payment } from '@/services/useUser';
 
-type Payment = {
-  id: number;
-  member: string;
-  date: string;
-  amount: number;
-  method: string;
-};
+// type Payment = {
+//   id: number;
+//   member: string;
+//   date: string;
+//   amount: number;
+//   method: string;
+// };
 
-const dummyPayments: Payment[] = Array.from({ length: 32 }, (_, i) => ({
-  id: i + 1,
-  member: `Member ${i + 1}`,
-  date: `2025-05-${((i % 30) + 1).toString().padStart(2, '0')}`,
-  amount: 250000,
-  method: ['Cash', 'Transfer', 'Card'][i % 3],
-}));
+// const dummyPayments: Payment[] = Array.from({ length: 32 }, (_, i) => ({
+//   id: i + 1,
+//   member: `Member ${i + 1}`,
+//   date: `2025-05-${((i % 30) + 1).toString().padStart(2, '0')}`,
+//   amount: 250000,
+//   method: ['Cash', 'Transfer', 'Card'][i % 3],
+// }));
 
 const ITEMS_PER_PAGE = 10;
 
 const formatDate = (date: Date): string => date.toISOString().split('T')[0];
 
 export default function PaymentPage() {
+  const { allPayment } = useOutletContext<{ allPayment: Payment[] }>();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [page, setPage] = useState(1);
-
   const formattedDate = formatDate(selectedDate);
 
   // Filter payments by selected date
-  const filteredPayments = dummyPayments.filter((p) => p.date === formattedDate);
+  // const filteredPayments = allPayment.filter((p) => String(new Date(p.paymentAt)).split('T')[0] == selectedDate.toJSON().split('T')[0]);
+  const filteredPayments = allPayment.filter((p) => {
+    const paymentDate = new Date(p.paymentAt).toLocaleDateString();
+    const selected = selectedDate.toLocaleDateString();
+    return paymentDate == selected;
+  });
+  // console.log(String(allPayment[0].paymentAt).split('T')[0]);
+  // console.log(selectedDate.toJSON().split('T')[0]);
+  // console.log(String(allPayment[0].paymentAt).split('T')[0] == selectedDate.toJSON().split('T')[0]);
+  console.log(filteredPayments);
   const totalPages = Math.ceil(filteredPayments.length / ITEMS_PER_PAGE);
   const paginated = filteredPayments.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+  // console.log(paginated);
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(new Date(e.target.value));
@@ -145,8 +157,9 @@ export default function PaymentPage() {
             <tbody>
               {paginated.map((p) => (
                 <tr key={p.id} className="border-b">
-                  <td className="px-4 py-2">{p.member.split(' ')[1]}</td>
-                  <td className="px-4 py-2">{p.member}</td>
+                  {/* <td className="px-4 py-2">{p.member.split(' ')[1]}</td> */}
+                  <td className="px-4 py-2">{p.id}</td>
+                  <td className="px-4 py-2">{p.name}</td>
                   <td className="px-4 py-2">{p.amount.toLocaleString()}</td>
                   <td className="px-4 py-2">{p.method}</td>
                 </tr>

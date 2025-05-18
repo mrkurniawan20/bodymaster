@@ -237,7 +237,9 @@ export async function getTodayVisit(req: Request, res: Response) {
 
 export async function getAllPayment(req: Request, res: Response) {
   try {
-    const payment = prisma.payment.findMany();
+    const payment = await prisma.payment.findMany({
+      include: { member: true },
+    });
     res.status(200).json(payment);
   } catch (error: any) {
     res.status(400).json({ error: error.message });

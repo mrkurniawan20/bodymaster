@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { addMember, editMember, extendMember, getAllMember, getLogVisit, getMember, getTodayVisit, loginMember, recordVisit } from '../controllers/user-controller';
+import { addMember, editMember, extendMember, getAllMember, getAllPayment, getLogVisit, getMember, getTodayVisit, loginMember, recordVisit } from '../controllers/user-controller';
 import { uploads } from '../middlewares/multer-middleware';
 import { authUser } from '../middlewares/auth-middleware';
 
@@ -13,4 +13,5 @@ routerUser.patch('/editMember/:id', uploads.none(), editMember);
 routerUser.post('/visit/:id', recordVisit);
 routerUser.get('/getTodayVisit', authUser, getTodayVisit);
 routerUser.get('/getVisitLog', authUser, getLogVisit);
+routerUser.get('/getpayment', authUser, getAllPayment);
 routerUser.post('/extendMember', uploads.none(), extendMember);

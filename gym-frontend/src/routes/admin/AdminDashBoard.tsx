@@ -3,11 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Menu, Users, CalendarDays, Settings } from 'lucide-react';
 import { Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
 import { NavLink, useNavigate, useOutletContext } from 'react-router-dom';
-import axios from 'axios';
-import { getAllMember } from '@/services/api';
-import type { Response } from 'express';
-import { useEffect, useState } from 'react';
-import type { Member, Visitor } from '@/services/useUser';
+import type { Member, Payment, Visitor } from '@/services/useUser';
 
 const expiredMembers = [
   { id: 1, name: 'John Doe', expiredAt: '2025-05-01' },
@@ -58,6 +54,7 @@ const groupByDate = (members: typeof expiredMembers) => {
 export function AdminDashboard() {
   const { member } = useOutletContext<{ member: Member[] }>();
   const { todayVisit } = useOutletContext<{ todayVisit: Visitor[] }>();
+  // console.log(member, todayVisit, allPayment);
   // const [getMember, setGetMember] = useState([]);
   // const [getVisit, setGetVisit] = useState([]);
   // useEffect(() => {
