@@ -31,11 +31,11 @@ export default function MemberExtend() {
     try {
       await axios.post(`http://localhost:3450/member/extendmember/`, formData);
       navigate('/dashboard');
+      window.location.reload();
     } catch (err: any) {
       console.error('Update failed:', err);
     } finally {
       setLoading(false);
-      window.location.reload();
     }
   };
   const [buttonDisable, setButtonDisable] = useState(true);
@@ -54,21 +54,40 @@ export default function MemberExtend() {
             </Label>
             <div className="flex">
               <Input id="id" name="id" value={formData.id} onChange={handleChange} placeholder="ID" type="text" /> &ensp;
-              <Button onClick={handleClick}>Check Name</Button>
+              <Button onClick={handleClick}>Check ID</Button>
             </div>
           </div>
-          {!buttonDisable && (
+          {/* {!buttonDisable && (
             <div className="flex items-center justify-between font-bold">
               {member.find((m) => m.id === Number(formData.id))?.name ? (
-                <p className="text-sm text-green-600 bg-green-100 border border-green-300 rounded-md p-2 text-center my-4 mx-auto">{`Member Name : ${member.find((m) => m.id === Number(formData.id))?.name}`}</p>
+                <div className="text-sm text-green-600 bg-green-100 border border-green-300 rounded-md p-2 text-center my-4 mx-auto">
+                  <p>{`Member Name : ${member.find((m) => m.id === Number(formData.id))?.name}`}</p>
+                </div>
               ) : (
                 <p className="text-sm text-red-600 bg-red-100 border border-red-300 rounded-md p-2 text-center my-4 mx-auto">Member tidak ada</p>
               )}
             </div>
-          )}
+          )} */}
+
+          {!buttonDisable &&
+            (() => {
+              const selectedMember = member.find((m) => m.id === Number(formData.id));
+              return (
+                <div className="flex items-center justify-between font-bold">
+                  {selectedMember! ? (
+                    <div className="text-sm text-green-600 bg-green-100 border border-green-300 rounded-md p-2 text-center my-4 mx-auto">
+                      <p>{`Member Name : ${selectedMember?.name}`}</p>
+                      <p>{`Expire Date : ${new Date(selectedMember!.expireDate).toLocaleDateString('id-ID')}`}</p>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-red-600 bg-red-100 border border-red-300 rounded-md p-2 text-center my-4 mx-auto">Member tidak ada</p>
+                  )}
+                </div>
+              );
+            })()}
           {buttonDisable ? (
             <Button type="submit" className="w-full" disabled>
-              Please Check Name First
+              Please Check ID First
             </Button>
           ) : (
             <Button type="submit" className="w-full">

@@ -35,10 +35,6 @@ export default function AddMember() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-  // const handleChangeID = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { name, value } = e.target;
-  //   setFormData((prev) => ({ ...prev, [name]: Number(value) }));
-  // };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
