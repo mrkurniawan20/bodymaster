@@ -29,10 +29,12 @@
     "ts-node": "^10.9.2"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.8.0",
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.18",
     "@types/express": "^5.0.1",
     "@types/jsonwebtoken": "^9.0.9",
+    "faker": "^5.5.3",
     "ts-node-dev": "^2.0.0"
   }
 }

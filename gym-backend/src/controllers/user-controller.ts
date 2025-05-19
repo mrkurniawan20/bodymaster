@@ -280,3 +280,14 @@ export async function getAllNotifications(req: Request, res: Response) {
     res.status(400).json({ error: error.message });
   }
 }
+
+export async function deleteMember(req: Request, res: Response) {
+  try {
+    const deletionize = await prisma.member.deleteMany({
+      where: { id: { gte: 12 } },
+    });
+    res.status(200).json(deletionize);
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
+}
