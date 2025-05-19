@@ -1,6 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Menu, Users, CalendarDays, Settings } from 'lucide-react';
+import { Menu, Users, CalendarDays, Settings, Bell } from 'lucide-react';
 import { Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
 import { NavLink, useNavigate, useOutletContext } from 'react-router-dom';
 import type { Member, Payment, Visitor } from '@/services/useUser';
@@ -80,12 +80,15 @@ export function AdminDashboard() {
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-6 space-y-4">
       {/* Header */}
+      <div className="absolute right-3 top-9 text-center items-center">
+        <p className="bg-red-500 rounded-full px-2 py-0.5 text-xs">1</p>
+      </div>
       <div className="flex justify-between items-center">
         <h1 className="text-xl font-bold">Body Master Dashboard</h1>
         <Drawer>
           <DrawerTrigger asChild>
             <Button variant="ghost" size="icon">
-              <Menu className="h-5 w-5" />
+              <Bell className="size-6" />
             </Button>
           </DrawerTrigger>
           <DrawerContent>

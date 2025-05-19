@@ -13,6 +13,7 @@ import PaymentPage from './admin/Payment';
 import { ProtectedRouteLayoutAdmin } from './ProtectedRouteAdmin';
 import MemberList from './admin/MemberList';
 import MemberExtend from './admin/MemberExtend';
+import { ExpireMemberPage } from './admin/MemberExpired';
 
 export let router = createBrowserRouter([
   {
@@ -58,6 +59,10 @@ export let router = createBrowserRouter([
       {
         path: '/extendmember',
         Component: MemberExtend,
+      },
+      {
+        path: '/expiredmember',
+        Component: ExpireMemberPage,
       },
     ],
   },

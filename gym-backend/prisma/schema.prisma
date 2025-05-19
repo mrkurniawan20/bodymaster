@@ -74,7 +74,8 @@ enum Method {
 model Notifications{
   id Int @id @default(autoincrement())
   content String
-  readStatus Read 
+  createdAt DateTime @default(now())
+  readStatus Read @default(UNREAD)
 }
 
 enum Read {
