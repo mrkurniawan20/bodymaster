@@ -13,7 +13,7 @@ export function CronJob() {
         if (memberExpired.count > 0) {
           const addNotif = await tx.notifications.create({
             data: {
-              content: `${memberExpired.count} expired, click to see all expired member`,
+              content: `${memberExpired.count} members expired, click to see all expired member`,
             },
           });
         }

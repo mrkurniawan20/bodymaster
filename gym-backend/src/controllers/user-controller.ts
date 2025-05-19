@@ -271,3 +271,12 @@ export async function getAllPayment(req: Request, res: Response) {
     res.status(400).json({ error: error.message });
   }
 }
+
+export async function getAllNotifications(req: Request, res: Response) {
+  try {
+    const notif = await prisma.notifications.findMany({});
+    res.status(200).json(notif);
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
+}

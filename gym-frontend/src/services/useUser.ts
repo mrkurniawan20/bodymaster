@@ -32,6 +32,13 @@ export interface MemberProps {
   user: Member;
 }
 
+export interface Notifications {
+  id: number;
+  content: string;
+  createdAt: Date;
+  readStatus: 'READ' | 'UNREAD';
+}
+
 export function useUser() {
   const [user, setUser] = useState<Member | null>(null);
   const [loading, setLoading] = useState(true);
@@ -68,6 +75,7 @@ export function useMember() {
   const [visit, setVisit] = useState<Visitor[] | null>(null);
   const [todayVisit, setTodayVisit] = useState<Visitor | null>(null);
   const [allPayment, setAllPayment] = useState<Payment[] | null>(null);
+  const [notifications, setNotifications] = useState<Notifications[] | null>(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -81,9 +89,10 @@ export function useMember() {
       const fetchVisitLog = axios.get('http://127.0.0.1:3450/member/getvisitlog/', { headers: { Authorization: `Bearer ${token}` } });
       const fetchTodayVisit = axios.get('http://127.0.0.1:3450/member/getTodayVisit/', { headers: { Authorization: `Bearer ${token}` } });
       const fetchAllPayment = axios.get('http://127.0.0.1:3450/member/getpayment/', { headers: { Authorization: `Bearer ${token}` } });
-      Promise.all([fetchAllMember, fetchVisitLog, fetchTodayVisit, fetchAllPayment])
-        .then(([allMemberRes, visitLogRes, todayVisitRes, allPaymentRes]) => {
-          setMember(allMemberRes.data), setVisit(visitLogRes.data), setTodayVisit(todayVisitRes.data), setAllPayment(allPaymentRes.data);
+      const fetchAllNotifications = axios.get('http://localhost:3450/member/getnotif', { headers: { Authorization: `Bearer ${token}` } });
+      Promise.all([fetchAllMember, fetchVisitLog, fetchTodayVisit, fetchAllPayment, fetchAllNotifications])
+        .then(([allMemberRes, visitLogRes, todayVisitRes, allPaymentRes, allNotificationsRes]) => {
+          setMember(allMemberRes.data), setVisit(visitLogRes.data), setTodayVisit(todayVisitRes.data), setAllPayment(allPaymentRes.data), setNotifications(allNotificationsRes.data);
         })
         .catch((err) => {
           console.log(`Failed to fetch user ${err}`);
@@ -124,5 +133,5 @@ export function useMember() {
       localStorage.removeItem('token');
     }
   }, []);
-  return { member, visit, todayVisit, allPayment, loading };
+  return { member, visit, todayVisit, allPayment, notifications, loading };
 }
