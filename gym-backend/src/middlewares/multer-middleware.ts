@@ -1,13 +1,17 @@
 import { NextFunction, Request, Response } from 'express';
 import multer from 'multer';
+import { normalize } from 'path';
 
 const whitelisted = ['image/png', 'image/jpeg', 'image/jpg'];
 
 const pictureStorage = multer.diskStorage({
-  destination: '/src/uploads/profile-picture',
+  // destination: function (req, file, cb) {
+  //   cb(null, '/src/uploads/profile-picture');
+  // },
+  destination: 'uploads/profile-picture',
   filename(req, file, callback) {
     const randomNumber = Math.round(Math.random() * 1000) + 1000;
-    callback(null, `${new Date(Date.now())} - ${randomNumber} - ${file.originalname}`);
+    callback(null, `${randomNumber} - ${file.originalname}`);
   },
 });
 // const avatarStorage = multer.diskStorage({

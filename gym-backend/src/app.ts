@@ -4,6 +4,7 @@ import { routerUser } from './routers/user-router';
 import cors from 'cors';
 import cron from 'node-cron';
 import { CronJob } from './utils/cronJobs';
+import path from 'path';
 
 const app = express();
 const PORT = 3450;
@@ -15,6 +16,7 @@ const options: cors.CorsOptions = {
 };
 app.use(express.json());
 app.use(cors(options));
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 CronJob();
 

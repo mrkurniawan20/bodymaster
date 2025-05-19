@@ -9,9 +9,9 @@ export const routerUser = Router();
 
 routerUser.post('/addmember', authUser, uploadProfilePicture.none(), addMember);
 routerUser.post('/loginMember', uploadProfilePicture.none(), loginMember);
-routerUser.get('/getMember/:id', authUser, getMember);
+routerUser.get('/getMember/:id', getMember);
 routerUser.get('/getAllMember', authUser, getAllMember);
-routerUser.patch('/editMember/:id', uploadProfilePicture.none(), editMember);
+routerUser.patch('/editMember/:id', authUser, uploadProfilePicture.single('image'), editMember);
 routerUser.post('/visit/:id', recordVisit);
 routerUser.get('/getTodayVisit', authUser, getTodayVisit);
 routerUser.get('/getVisitLog', authUser, getLogVisit);

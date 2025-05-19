@@ -12,13 +12,13 @@ export async function addMember(req: Request, res: Response) {
     let pics = '';
     let amount = 0;
     if (category === 'REGULAR') {
-      pics = '/src/assets/img/man.png';
+      pics = '/uploads/profile-picture/man.png';
       amount = 210000;
     } else if (category === 'WANITA') {
-      pics = '/src/assets/img/woman.png';
+      pics = '/uploads/profile-picture/woman.png';
       amount = 190000;
     } else {
-      pics = '/src/assets/img/child.jpg';
+      pics = '/uploads/profile-picture/child.jpg';
       amount = 185000;
     }
     const numberId = Number(id);
@@ -123,7 +123,7 @@ export async function getMember(req: Request, res: Response) {
 export async function editMember(req: Request, res: Response) {
   try {
     const id = Number(req.params.id);
-    const image = req.file?.path;
+    const image = req.file?.path.replace(/\\/g, '/');
     const { password, phone, name } = req.body;
     const dataToUpdate: Record<string, any> = {};
     if (name) dataToUpdate.name = name;
@@ -132,6 +132,7 @@ export async function editMember(req: Request, res: Response) {
       const hashed = await bcrypt.hash(password, saltRounds);
       dataToUpdate.password = hashed;
     }
+    if (image) dataToUpdate.image = image;
     const edit = await prisma.member.update({
       where: { id },
       data: dataToUpdate,
