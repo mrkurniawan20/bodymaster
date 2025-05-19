@@ -70,3 +70,14 @@ enum Method {
   QR
   CASH 
 }
+
+model Notifications{
+  id Int @id @default(autoincrement())
+  content String
+  readStatus Read 
+}
+
+enum Read {
+  READ
+  UNREAD
+}

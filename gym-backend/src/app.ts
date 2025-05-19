@@ -2,7 +2,6 @@ import express from 'express';
 import { routerUser } from './routers/user-router';
 // import { routerPost } from './router/post-router';
 import cors from 'cors';
-import cron from 'node-cron';
 import { CronJob } from './utils/cronJobs';
 import path from 'path';
 
