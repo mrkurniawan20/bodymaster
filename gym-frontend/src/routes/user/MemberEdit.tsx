@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ChangeEvent } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -17,6 +17,7 @@ export default function EditMemberPage() {
     }
   }, []);
 
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -65,12 +66,19 @@ export default function EditMemberPage() {
     console.log(formData);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
+  function handleFile(e: ChangeEvent<HTMLInputElement>) {
+    // setSelectedFile(e.target.files[0])
+    const files = e.target.files;
+    if (files) {
+      setFormData({ ...formData, [e.target.name]: files[0] });
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.patch(`http://127.0.0.1:3450/member/editmember/${id}`, formData, { headers: { Authorization: `Bearer ${token}` } });
+      await axios.patch(`http://127.0.0.1:3450/member/editmember/${id}`, formData, { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } });
       navigate('/landingpage');
     } catch (err) {
       console.error('Update failed:', err);
@@ -101,6 +109,12 @@ export default function EditMemberPage() {
               Password
             </Label>
             <Input id="password" name="password" value={formData.password} onChange={handleChange} placeholder="••••••••" type="password" />
+          </div>
+          <div>
+            <Label htmlFor="image" className="mb-2">
+              Profile Picture
+            </Label>
+            <Input id="image" name="image" onChange={handleFile} type="file" />
           </div>
           <div className="flex items-center justify-between"></div>
           <Button type="submit" className="w-full" disabled={loading}>
