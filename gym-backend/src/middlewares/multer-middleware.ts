@@ -3,52 +3,70 @@ import multer from 'multer';
 
 const whitelisted = ['image/png', 'image/jpeg', 'image/jpg'];
 
-const avatarStorage = multer.diskStorage({
-  destination: '/src/uploads/avatar',
+const pictureStorage = multer.diskStorage({
+  destination: '/src/uploads/profile-picture',
   filename(req, file, callback) {
     const randomNumber = Math.round(Math.random() * 1000) + 1000;
     callback(null, `${new Date(Date.now())} - ${randomNumber} - ${file.originalname}`);
   },
 });
-const headerStorage = multer.diskStorage({
-  destination: '/src/uploads/header',
-  filename(req, file, callback) {
-    const randomNumber = Math.round(Math.random() * 1000) + 1000;
-    callback(null, `${new Date(Date.now())} - ${randomNumber} - ${file.originalname}`);
-  },
-});
+// const avatarStorage = multer.diskStorage({
+//   destination: '/src/uploads/avatar',
+//   filename(req, file, callback) {
+//     const randomNumber = Math.round(Math.random() * 1000) + 1000;
+//     callback(null, `${new Date(Date.now())} - ${randomNumber} - ${file.originalname}`);
+//   },
+// });
+// const headerStorage = multer.diskStorage({
+//   destination: '/src/uploads/header',
+//   filename(req, file, callback) {
+//     const randomNumber = Math.round(Math.random() * 1000) + 1000;
+//     callback(null, `${new Date(Date.now())} - ${randomNumber} - ${file.originalname}`);
+//   },
+// });
 
-const uploadAvatar = multer({
-  storage: avatarStorage,
-  limits: { fileSize: 2 * 1024 * 1024 },
+export const uploadProfilePicture = multer({
+  storage: pictureStorage,
+  // limits: {fileSize:  2 * 1024 *1024}
   fileFilter: (req, file, cb) => {
     if (!whitelisted.includes(file.mimetype)) {
-      return cb(new Error('File not supported, only support .png, .jpg, .jpeg'));
+      return cb(new Error(`File not supported`));
     } else {
       cb(null, true);
     }
   },
 });
+// const uploadAvatar = multer({
+//   storage: avatarStorage,
+//   limits: { fileSize: 2 * 1024 * 1024 },
+//   fileFilter: (req, file, cb) => {
+//     if (!whitelisted.includes(file.mimetype)) {
+//       return cb(new Error('File not supported, only support .png, .jpg, .jpeg'));
+//     } else {
+//       cb(null, true);
+//     }
+//   },
+// });
 
-const imageUpload = uploadAvatar.single('image');
-export const handleImageUpload = (req: Request, res: Response, next: NextFunction) => {
-  imageUpload(req, res, (error: any) => {
-    if (error) {
-      req.resume();
-      res.status(400).json({ error: error.message });
-    }
-    next();
-  });
-};
-const storage = multer.diskStorage({
-  destination: 'src/uploads',
-  filename: (req, file, cb) => {
-    const randomNumber = Math.round(Math.random() * 1000) + 1000;
-    cb(null, `${Date.now()}-${randomNumber}-${file.originalname}`);
-  },
-});
+// const imageUpload = uploadAvatar.single('image');
+// export const handleImageUpload = (req: Request, res: Response, next: NextFunction) => {
+//   imageUpload(req, res, (error: any) => {
+//     if (error) {
+//       req.resume();
+//       res.status(400).json({ error: error.message });
+//     }
+//     next();
+//   });
+// };
+// const storage = multer.diskStorage({
+//   destination: 'src/uploads',
+//   filename: (req, file, cb) => {
+//     const randomNumber = Math.round(Math.random() * 1000) + 1000;
+//     cb(null, `${Date.now()}-${randomNumber}-${file.originalname}`);
+//   },
+// });
 export const uploads = multer({
-  storage: storage,
+  storage: pictureStorage,
   limits: { fileSize: 2 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     if (!whitelisted.includes(file.mimetype)) {
