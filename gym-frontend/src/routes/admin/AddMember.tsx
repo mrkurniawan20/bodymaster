@@ -13,6 +13,7 @@ type MemberForm = {
   password: string;
   phone: string;
   category: 'REGULAR' | 'WANITA' | 'PELAJAR' | '';
+  method: 'QR' | 'CASH' | '';
 };
 
 export default function AddMember() {
@@ -23,6 +24,7 @@ export default function AddMember() {
     password: '',
     phone: '',
     category: '',
+    method: '',
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -135,6 +137,42 @@ export default function AddMember() {
                 />
                 <label htmlFor="pelajar" className="items-center ml-2 mt-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                   Pelajar
+                </label>
+                {/* <div className="grid gap-1.5 leading-none mt-2"></div> */}
+              </div>
+            </div>
+            <div className="mt-2">
+              <Label htmlFor="category">Pembayaran</Label>
+              {/* <Input id="category" name="category" value={form.category} onChange={handleChange} placeholder="08xxxxxxxxxx" required className="mt-2" /> */}
+              <div className="flex items-center">
+                <Checkbox
+                  id="qr"
+                  name="qr"
+                  checked={formData.method === 'QR'}
+                  onCheckedChange={(checked) => {
+                    console.log(formData);
+                    if (checked) setFormData((prev) => ({ ...prev, method: 'QR' }));
+                  }}
+                  className="mt-2"
+                />
+                <label htmlFor="reguler" className="items-center ml-2 mt-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  QR
+                </label>
+                {/* <div className="grid gap-1.5 leading-none mt-2"></div> */}
+              </div>
+              <div className="flex items-center">
+                <Checkbox
+                  id="cash"
+                  name="cash"
+                  checked={formData.method === 'CASH'}
+                  onCheckedChange={(checked) => {
+                    console.log(formData);
+                    if (checked) setFormData((prev) => ({ ...prev, method: 'CASH' }));
+                  }}
+                  className="mt-2"
+                />
+                <label htmlFor="wanita" className="items-center ml-2 mt-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  Cash
                 </label>
                 {/* <div className="grid gap-1.5 leading-none mt-2"></div> */}
               </div>

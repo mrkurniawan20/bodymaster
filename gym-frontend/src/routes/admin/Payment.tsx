@@ -158,7 +158,7 @@ export default function PaymentPage() {
               {paginated.map((p) => (
                 <tr key={p.id} className="border-b">
                   {/* <td className="px-4 py-2">{p.member.split(' ')[1]}</td> */}
-                  <td className="px-4 py-2">{p.id}</td>
+                  <td className="px-4 py-2">{p.memberId}</td>
                   <td className="px-4 py-2">{p.name}</td>
                   <td className="px-4 py-2">{p.amount.toLocaleString()}</td>
                   <td className="px-4 py-2">{p.method}</td>

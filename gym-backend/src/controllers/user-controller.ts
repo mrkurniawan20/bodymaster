@@ -8,31 +8,56 @@ import { login } from '../services/userService';
 
 export async function addMember(req: Request, res: Response) {
   try {
-    const { name, id, password, phone, category } = req.body;
+    const { name, id, password, phone, category, method } = req.body;
     let pics = '';
+    let amount = 0;
     if (category === 'REGULAR') {
       pics = '/src/assets/img/man.png';
+      amount = 210000;
     } else if (category === 'WANITA') {
       pics = '/src/assets/img/woman.png';
+      amount = 190000;
     } else {
       pics = '/src/assets/img/child.jpg';
+      amount = 185000;
     }
     const numberId = Number(id);
     const hashed = await bcrypt.hash(password, saltRounds);
     const joinDate = new Date();
     const expireDate = addMonths(joinDate, 1);
-    const add = await prisma.member.create({
-      data: {
-        name,
-        image: pics,
-        id: numberId,
-        password: hashed,
-        phone,
-        expireDate,
-        category,
-      },
-    });
-    res.status(201).json({ add });
+    // const add = await prisma.member.create({
+    //   data: {
+    //     name,
+    //     image: pics,
+    //     id: numberId,
+    //     password: hashed,
+    //     phone,
+    //     expireDate,
+    //     category,
+    //   },
+    // });
+    const addWithPayment = await prisma.$transaction([
+      prisma.member.create({
+        data: {
+          name,
+          image: pics,
+          id: numberId,
+          password: hashed,
+          phone,
+          expireDate,
+          category,
+        },
+      }),
+      prisma.payment.create({
+        data: {
+          amount,
+          method,
+          name: 'Member Baru',
+          memberId: numberId,
+        },
+      }),
+    ]);
+    res.status(201).json({ addWithPayment });
   } catch (error: any) {
     res.status(400).json({ error: error.message });
   }
